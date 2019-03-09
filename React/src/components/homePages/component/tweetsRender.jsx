@@ -26,9 +26,9 @@ class TweetsRender extends Form {
   doSubmit = async () => {
     // Call the server
     this.setState(this.state.data);
-    const { data: c } = await sendTweet(this.state.data.search);
 
-    console.log("Submitted", c);
+    const { data: c } = await sendTweet(this.state.data);
+    console.log("Submittesdsdd", c[c.length - 1]["search"]);
   };
 
   render() {
