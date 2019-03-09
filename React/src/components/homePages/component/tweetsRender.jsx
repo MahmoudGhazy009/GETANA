@@ -18,16 +18,17 @@ class TweetsRender extends Form {
       .label("Search")
       .min(3)
   };
-  async componentDidMount() {
+  /*async componentDidMount() {
     const originalTweets = this.state.data.search;
 
     await sendTweet(originalTweets);
-  }
-  doSubmit = () => {
+  }*/
+  doSubmit = async () => {
     // Call the server
     this.setState(this.state.data);
+    const { data: c } = await sendTweet(this.state.data.search);
 
-    console.log("Submitted", this.state.data.search);
+    console.log("Submitted", c);
   };
 
   render() {
