@@ -9,7 +9,8 @@ const app = express();
 const router = express.Router();
 
 // this is our MongoDB database
-const dbRoute = "mongodb://localhost/data";
+{
+  /*const dbRoute = "mongodb://localhost/data";
 
 // connects our back end code with the database
 mongoose.connect(
@@ -23,20 +24,18 @@ db.once("open", () => console.log("connected to the database"));
 
 // checks if connection with the database is successful
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
+*/
+}
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
-
+app.use(express.json());
 // this is our get method
 // this method fetches all available data in our database
-router.get("/getData", (req, res) => {
-  Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
+app.get("/getData", (req, res) => {
+  res.send("{ 8888success: true, data: data }");
 });
 
 // this is our update method
