@@ -19,6 +19,7 @@
   "homepage": "https://github.com/MahmoudGhazy009/GETANA#readme",
   "dependencies": {
     "concurrently": "^4.1.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "python-shell": "^1.0.7"
   }
 }
