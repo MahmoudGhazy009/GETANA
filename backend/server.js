@@ -39,6 +39,7 @@ app.post("/api/HashTag", (req, res) => {
     console.log('finished',k[0]["name"]);});
     //------------------------------//
     res.send(c);
+    console.log(c);
   }
 });
 
