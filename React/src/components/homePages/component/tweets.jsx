@@ -6,7 +6,12 @@ class Tweets extends Component {
     return (
       <div
         className="card text-black bg-light   "
-        style={{ maxWidth: 500, marginLeft: 70, marginTop: 100 }}
+        style={{
+          maxWidth: 500,
+          marginLeft: 70,
+          marginTop: 100,
+          margin: "auto"
+        }}
       >
         <div className="card-header row">
           <div className="column">

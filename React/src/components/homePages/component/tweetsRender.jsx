@@ -3,6 +3,8 @@ import Joi from "joi-browser";
 import Form from "./form";
 import Tweets from "./tweets";
 import UserBio from "./userBio";
+import searchLogo from "../images/searchLogo.png";
+
 import { sendTweet } from "./../../../servics/tweetService";
 
 class TweetsRender extends Form {
@@ -10,7 +12,8 @@ class TweetsRender extends Form {
     searchQuery: "",
     data: { search: "" },
     errors: {},
-    tweets: ["hi Ghazy"]
+    tweets: ["hi Ghazy"],
+    clicked: false
   };
   schema = {
     search: Joi.string()
@@ -25,7 +28,9 @@ class TweetsRender extends Form {
   }*/
   doSubmit = async () => {
     // Call the server
+    let clicked = true;
     this.setState(this.state.data);
+    this.setState({ clicked });
 
     const { data: c } = await sendTweet(this.state.data);
     console.log("Submittesdsdd", c[c.length - 1]["search"]);
@@ -34,13 +39,33 @@ class TweetsRender extends Form {
   render() {
     return (
       <React.Fragment>
-        <div style={{ maxWidth: 500, marginLeft: 250, marginTop: 100 }}>
-          <form onSubmit={this.handleSubmit} style={{ marginTop: 50 }}>
-            {this.renderInput("search", "Search")}
-            {this.renderButton("Search")}
-          </form>
+        <div
+          style={{
+            maxWidth: 500,
+            marginLeft: 250,
+            paddingTop: 10,
+            margin: "auto"
+          }}
+        >
+          <img
+            src={searchLogo}
+            alt="searchLogo"
+            style={{ paddingTop: 80, paddingBottom: 10 }}
+          />
+          <div>
+            <form onSubmit={this.handleSubmit}>
+              {this.renderInput("search")}
+              <div
+                style={{
+                  marginLeft: 215
+                }}
+              >
+                {this.renderButton("Search")}
+              </div>
+            </form>
+          </div>
         </div>
-        <Tweets />
+        {this.state.clicked && <Tweets />}
 
         <UserBio />
       </React.Fragment>

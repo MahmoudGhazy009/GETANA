@@ -14,7 +14,7 @@ class Feature extends Component {
           style={{
             marginTop: 75,
             backgroundPosition: "center 0px",
-            height: 200
+            height: 500
           }}
         >
           <div className="coverwrap">
