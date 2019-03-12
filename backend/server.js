@@ -1,11 +1,11 @@
 const express = require("express");
 //--------for connect with python file-------//
-let {PythonShell} = require('python-shell');
+let { PythonShell } = require("python-shell");
 let options = {
-  mode:"json",
-  pythonOptions: ['-u'], // get print results in real-time
-  scriptPath: '',
-  port:3001
+  mode: "json",
+  pythonOptions: ["-u"], // get print results in real-time
+  scriptPath: "",
+  port: 3001
 };
 //=======================//
 
@@ -15,7 +15,7 @@ app.use(express.json());
 const c = [{ id: 1, search: "l" }];
 
 app.post("/api/HashTag", (req, res) => {
-  let pyshell = new PythonShell('compute.py',options);
+  let pyshell = new PythonShell("compute.py", options);
 
   const customer = {
     id: c.length + 1,
@@ -23,20 +23,21 @@ app.post("/api/HashTag", (req, res) => {
   };
   c.push(customer);
   {
-    console.log(c[c.length - 1]["search"], "opopo");
-//=====----communicate with python---//
-    const word=c[c.length - 1]["search"];
-    pyshell.send(word); 
-    pyshell.on("message",async function (message) {
+    console.log(c[c.length - 1]["search"], "Getting Data");
+    //=====----communicate with python---//
+    const word = c[c.length - 1]["search"];
+    pyshell.send(word);
+    pyshell.on("message", async function(message) {
       // received a message sent from the Python script (a simple "print" statement)
-      k= JSON.parse(JSON.stringify(message));
+      k = JSON.parse(JSON.stringify(message));
       console.log(JSON.parse(JSON.stringify(message)));
     });
-    pyshell.end(function (err) {
-      if (err){
-          throw err;
-      };
-    console.log('finished',k[0]["name"]);});
+    pyshell.end(function(err) {
+      if (err) {
+        throw err;
+      }
+      console.log("finished", k[0]["name"]);
+    });
     //------------------------------//
     res.send(c);
   }
