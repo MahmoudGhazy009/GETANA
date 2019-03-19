@@ -33,7 +33,9 @@ class TweetsRender extends Form {
     this.setState({ clicked });
 
     const { data: c } = await sendTweet(this.state.data);
-    console.log("Submittesdsdd", c[c.length - 1]["search"]);
+   // const {data: tweets}=await getTweets();
+    console.log("Submittesdsdd", c.timeline[1].name);
+   // console.log("here what back",tweets);
   };
 
   render() {

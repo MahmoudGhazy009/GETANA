@@ -41,7 +41,8 @@ const app = express();
 app.use(express.json());
 
 const c = [{ id: 1, search: "l" }];
-
+let tweets="";
+//let k={};
 app.post("/api/HashTag",async (req, res) => {
 const customer = {
     id: c.length + 1,
@@ -53,12 +54,13 @@ const customer = {
 //=====----communicate with python---//
 const word=c[c.length - 1]["search"];
 
- sendToPython(word);
- res.send(c);
+tweets = await sendToPython(word,res,tweets);
+await console.log("fffffff",tweets);
+//res.send(c);
 });
   //------------------------------//
-function sendToPython(word){
-    let pyshell = new PythonShell('compute.py',options);
+async function sendToPython(word,res,tweets){
+    let pyshell = new PythonShell('try.py',options);
     pyshell.send(word); 
     pyshell.on("message",function (message) {
       // received a message sent from the Python script (a simple "print" statement)
@@ -69,17 +71,21 @@ function sendToPython(word){
       if (err){
           throw err;
       };
-      getTweets();
-    console.log('finished',k[0]["name"]);
+      //tweets = await getTweets();
+      res.send(k);
+      //return tweets
+    //console.log('finished',k[0]["name"]);
   });
 }
   
   //console.log(c);
   
 
-async function getTweets(){
-    const tweets =await  Tweet.find();
-        console.log("wwwwwwwwwww",tweets);
+async function getTweets(res){
+    return tweets =await Tweet.find();
+    
+      console.log("wwwwwwwwwww",tweets);
+      //res.send(tweets);
 }
 
 
