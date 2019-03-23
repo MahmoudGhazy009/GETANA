@@ -11,10 +11,10 @@ const Like = props => {
         className={classes}
         aria-hidden="true"
       >
-        10
+        {props.like}
       </i>
       <i className="fa fa-retweet ml-4" aria-hidden="true">
-        20
+      {props.retweet}
       </i>
     </div>
   );

@@ -43,10 +43,10 @@ class Tweets extends Component {
         <div className="card-body">
           <h5 className="card-title">Info card title</h5>
           <p className="card-text">
-           {tweet[index].tweet}
+           {item.tweet}
           </p>
         </div>
-        <Like />
+        <Like like={tweet[index].likes} retweet={item['retweet_count']}/>
         <br>
       </br >
       </div>
