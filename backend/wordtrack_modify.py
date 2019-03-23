@@ -24,7 +24,7 @@ api = tweepy.API(auth)
 
 class Wordtrack:
     
-    def __init__(self,query,api=api,tweets_count=100):
+    def __init__(self,query,tweets_count=100):
         self.query = query
 #        self.tweets_count = tweets_count
         self.max_id = None
