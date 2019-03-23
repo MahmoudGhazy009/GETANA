@@ -31,6 +31,7 @@ class TweetsRender extends Form {
     let clicked = true;
     this.setState(this.state.data);
     this.setState({ clicked });
+    
 
     const { data: c } = await sendTweet(this.state.data);
    // const {data: tweets}=await getTweets();
