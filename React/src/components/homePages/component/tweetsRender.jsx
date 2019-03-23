@@ -12,7 +12,7 @@ class TweetsRender extends Form {
     searchQuery: "",
     data: { search: "" },
     errors: {},
-    tweets: ["hi Ghazy"],
+    tweets:{ timeline:[{name:"8",user_pic:"#"}]},
     clicked: false
   };
   schema = {
@@ -33,9 +33,11 @@ class TweetsRender extends Form {
     this.setState({ clicked });
     
 
-    const { data: c } = await sendTweet(this.state.data);
+    const { data: tweets } = await sendTweet(this.state.data);
    // const {data: tweets}=await getTweets();
-    console.log("Submittesdsdd", c.timeline[1]);
+console.log('hiii');
+   this.setState({tweets})
+    console.log("Submittesdsdd", tweets.timeline[1]);
    // console.log("here what back",tweets);
   };
 
@@ -68,9 +70,12 @@ class TweetsRender extends Form {
             </form>
           </div>
         </div>
-        {this.state.clicked && <Tweets />}
+        {this.state.clicked &&
+        
+        
+       <Tweets tweet={this.state.tweets.timeline}/>}
 
-        <UserBio />
+        {/*<UserBio />*/}
       </React.Fragment>
     );
   }

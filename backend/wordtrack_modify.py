@@ -143,12 +143,12 @@ class Wordtrack:
 #            self.track_df.loc[i,'gender'] = self.gender_predict(tweet.user.name.lower())
             
            
-        from_khalid_to_ghazy['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
+        '''from_khalid_to_ghazy['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
                             "freq_tweet_hashtag" : dict(hash_num)
                             })
-    
+        '''
         
         return from_khalid_to_ghazy
     

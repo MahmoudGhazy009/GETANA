@@ -21,7 +21,7 @@ class UserBio extends Component {
             <ProgressBars />
             <Graphs />
             <Bubbless />
-            <SimpleMap />
+           {/* <SimpleMap />*/}
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ class SimpleMap extends Component {
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: "100vh", width: "100%" }}>
-        <GoogleMapReact
+        {/* <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDO80uCKb880Nbi5SORAJW4aSvkLBD9kWU" }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
@@ -26,7 +26,7 @@ class SimpleMap extends Component {
             lng={30.337844}
             text={"Kreyser Avrora"}
           />
-        </GoogleMapReact>
+       </GoogleMapReact> */}
       </div>
     );
   }
