@@ -5,7 +5,7 @@ def main():
     lines = sys.stdin.readlines()[0].replace('"',"").replace("\n","")
     x = [{
      "name": lines,
-     "age": 30,
+     "age": None,
     "city": "New York"
     }]
     y=json.dumps(x)
