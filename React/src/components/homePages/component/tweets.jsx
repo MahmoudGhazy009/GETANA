@@ -37,12 +37,12 @@ class Tweets extends Component {
             />
           </div>
           <div className="column">
-            <h4 style={{ marginLeft:20,marginTop:5 }}>{item.name}</h4>
+            <h4 style={{ marginLeft:20,marginTop:5 }}><a href={item['user_url']}>{item.name}</a></h4>
           </div>
         </div>
         <div className="card-body">
           <p className="card-text">
-           {item.tweet}
+          <a href={item['tweet_url']}> {item.tweet}</a>
           </p>
         </div>
         <Like like={item.likes} retweet={item['retweet_count']}/>
