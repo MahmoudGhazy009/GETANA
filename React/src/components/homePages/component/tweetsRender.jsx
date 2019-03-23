@@ -70,7 +70,8 @@ console.log('hiii');
             </form>
           </div>
         </div>
-        {this.state.clicked &&
+        {console.log(this.state.tweets.timeline.length)}
+        {this.state.tweets.timeline.length>2 &&
         
         
        <Tweets tweet={this.state.tweets.timeline}/>}

@@ -27,7 +27,7 @@ class Tweets extends Component {
           <div className="column">
             <img
               className="rounded-circle "
-              src={tweet[index]['user_pic']}
+              src={item['user_pic']}
               alt="name"
               style={{
                 maxWidth: 70,
@@ -37,16 +37,15 @@ class Tweets extends Component {
             />
           </div>
           <div className="column">
-            <h4 style={{ marginLeft:20,marginTop:5 }}>{tweet[index].name}</h4>
+            <h4 style={{ marginLeft:20,marginTop:5 }}>{item.name}</h4>
           </div>
         </div>
         <div className="card-body">
-          <h5 className="card-title">Info card title</h5>
           <p className="card-text">
            {item.tweet}
           </p>
         </div>
-        <Like like={tweet[index].likes} retweet={item['retweet_count']}/>
+        <Like like={item.likes} retweet={item['retweet_count']}/>
         <br>
       </br >
       </div>
