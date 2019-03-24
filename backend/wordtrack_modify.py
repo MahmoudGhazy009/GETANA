@@ -24,7 +24,7 @@ api = tweepy.API(auth)
 class Wordtrack:
     
     def __init__(self,query,tweets_count=100):
-        self.query = query
+        self.query = query.split()
 #        self.tweets_count = tweets_count
         self.max_id = None
         self.api = api
@@ -40,8 +40,8 @@ class Wordtrack:
         tweets=[]
         while iterr_num:
             try:
-                tweets.extend(api.search(lang="en",q=self.query,count = 100, result_type="mixed",include_rts = False, tweet_mode = 'extended',max_id=self.max_id))
-                self.max_id = tweets[-1].id - 300000000000000 #day by day
+                tweets.extend(api.search(lang="en",q=self.query,count = 100, result_type="recent",include_rts = False, tweet_mode = 'extended',max_id=self.max_id))
+                self.max_id = (int(tweets[-1].id_str[:4])) * (10**15) #day by day
                 iterr_num-=1
             except :
                 break
@@ -57,7 +57,8 @@ class Wordtrack:
         Return: json object
         """
         
-        self.track_df = pd.DataFrame()
+        self.track_df = pd.DataFrame({'created_at':[],'tweet':[]})
+        self.track_df['created_at'] = self.track_df['created_at'].astype('datetime64[ns]')
         hash_num = Counter()
         app = Counter()
         content = Counter()
@@ -80,7 +81,7 @@ class Wordtrack:
                 contentv = entity.get('media')[0]['type']
                 if contentv == 'photo':
                     for media in entity.get('media'):
-                        photo.append(media['type'])
+                        photo.append(media['media_url'])
             
             elif len(url):
                 contentv = 'url'
@@ -146,27 +147,29 @@ class Wordtrack:
 #            self.track_df.loc[i,'gender'] = self.gender_predict(tweet.user.name.lower())
 #        hour = self.track_df['created_at'].resample('H').count()   
                 # create at index
-        day = self.track_df['created_at'].resample('D').count().to_dict()
+        
         day_of_week = self.track_df['created_at'].dt.day_name().value_counts().to_dict()
-        hour_of_week = self.track_df['created_at'].dt.hour().value_counts().to_dict()
+        active_hours = self.track_df['created_at'].dt.hour.value_counts().to_dict()
+#        days = self.track_df['created_at'].dt.day.value_counts().to_dict()
+        active_time = self.track_df.set_index('created_at').resample('D').count()['tweet'].to_dict()
         
 
         timeline_analysis['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
                             "freq_tweet_hashtag" : dict(hash_num),
-                            "day" : day,
+                            "time" : active_time,
                             "day_of_week" : day_of_week,
-                            "hour_of_week" : hour_of_week
+                            "hours" : active_hours
                             })
   
         
         return timeline_analysis
     
-    
-word = Wordtrack("salah")
+word = Wordtrack("data",300)
 ana = word.analysis()
-print(ana)
+
+
 # =============================================================================
 #     
 #     def gender(self):
