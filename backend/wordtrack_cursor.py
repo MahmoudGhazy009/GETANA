@@ -20,57 +20,37 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-
 class Wordtrack:
     
-    def __init__(self,query,tweets_count=100):
+    def __init__(self,query,tweets_count=100,lang="en",result_type="recent"):
         self.query = query.split()
-#        self.tweets_count = tweets_count
-        self.max_id = None
+        self.tweets_count = tweets_count
+        self.lang = lang
+        self.result_type = result_type
         self.api = api
-        self.tweets = self.search(tweets_count/100)
 #        self.gender()
         
-    def search(self,iterr_num):
+
+    def search(self):
+        
         """
         gather tweets
         pram : num of itteration
         return list of json objects
         """
-        tweets=[]
-        while iterr_num:
-            try:
-                tweets.extend(api.search(lang="en",q=self.query,count = 500, result_type="recent",include_rts = False, tweet_mode = 'extended',max_id=self.max_id))
-                self.max_id = (int(tweets[-1].id_str[:4])) * (10**15) #day by day
-                iterr_num-=1
-            except :
-                break
-        return tweets
-    
-    
-    
-    
-    def analysis(self):
-        """
-        analysis: create dataframe for tweets
-        Parameter: None
-        Return: json object
-        """
-        
+        self.tweets=[]
         self.track_df = pd.DataFrame({'created_at':[],'tweet':[]})
         self.track_df['created_at'] = self.track_df['created_at'].astype('datetime64[ns]')
         hash_num = Counter()
         app = Counter()
+        place = Counter()
         content = Counter()
         tweet_type = Counter()
-        place =  Counter()
         timeline_analysis={}
-        timeline_analysis['timeline'] = []
-        timeline_analysis['analysis']=[]            
+        timeline_analysis['timeline'] = []        
 
-        
-        for i,tweet in enumerate(self.tweets):
-
+        for i,tweet in enumerate(tweepy.Cursor(self.api.search, q= self.query, lang=self.lang, result_type=self.result_type, include_rts = False, tweet_mode = 'extended').items(self.tweets_count)):
+            self.tweets.append(tweet)
             retweet_count=0
             self.track_df.loc[i,'created_at'] = tweet.created_at
             self.track_df.loc[i,'tweet'] = tweet.full_text
@@ -89,7 +69,6 @@ class Wordtrack:
             else:
                 contentv = 'text'
             
-            
             if tweet.place is None:
                 if tweet.user.location is None:
                     location = None
@@ -101,7 +80,6 @@ class Wordtrack:
                         location = temp[0].strip()
             else:
                 location = tweet.place.country   
-            
             
 #                retweets                
             try:
@@ -154,17 +132,13 @@ class Wordtrack:
             for i in range(len(hasht)):
                 hash_num[hasht[i]['text']] += 1
 
-#            self.track_df.loc[i,'gender'] = self.gender_predict(tweet.user.name.lower())
-#        hour = self.track_df['created_at'].resample('H').count()   
-                # create at index
         
         day_of_week = self.track_df['created_at'].dt.day_name().value_counts().to_dict()
         active_hours = self.track_df['created_at'].dt.hour.value_counts().to_dict()
-#        days = self.track_df['created_at'].dt.day.value_counts().to_dict()
         active_time = self.track_df.set_index('created_at').resample('D').count()['tweet'].to_dict()
         
 
-        timeline_analysis['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
+        timeline_analysis['analysis']= {"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
                             "freq_tweet_hashtag" : dict(hash_num),
@@ -172,33 +146,11 @@ class Wordtrack:
                             "time" : active_time,
                             "day_of_week" : day_of_week,
                             "hours" : active_hours
-                            })
-  
+                            }
         
         return timeline_analysis
-    
+        
 
-# =============================================================================
-#     
-#     def gender(self):
-#         self.gender_df = pd.read_csv(r"/project/datasets/name_gender.csv")
-#         self.gender_df['name'] = self.gender_df['name'].str.lower()
-#         self.gender_df.dropna(inplace=True)
-#         self.tfidf_vectorizer = TfidfVectorizer()
-#         self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(self.gender_df['name'])
-# 
-#     def gender_predict(self,name):
-#         
-#         g = self.gender_df.loc[self.gender_df['name']==name,'gender']
-#         
-#         if len(g):
-#             g.reset_index(drop=True,inplace=True)
-#             return g[0]
-#         else:
-#             name = self.tfidf_vectorizer.transform([name])
-#             self.out = cosine_similarity(name, self.tfidf_matrix)[0]
-#             g = self.gender_df.loc[self.out.argmax(),'gender']
-#             return g
-# 
-# 
-# =============================================================================
+
+word = Wordtrack(query="salah",tweets_count=300)
+t = word.search()
