@@ -27,6 +27,7 @@ table = str.maketrans({key: None for key in string.punctuation})
 
 
 country_map = pd.read_csv('Country Codes.csv',header=0,usecols=[0,1,2],names=['country','code2','code3'])
+country_map.fillna(' ')
 country_map['country'] = country_map['country'].str.lower()
 country_map['code3'] = country_map['code3'].str.lower()
 country_map['code2'] = country_map['code2'].str.lower()
@@ -115,7 +116,7 @@ class Wordtrack:
             for value in country_map.values():
                 self.flag = 0
                 for country, code in value.items():
-                    if (country in location) or (code in location):
+                    if (country in location[0]) or (code in location[0]):
                         location = (country,'map')
                         self.flag = 1
                         break
@@ -201,6 +202,8 @@ class Wordtrack:
         
         return timeline_analysis
     
+
+word = Wordtrack('allah')
 
 
 # =============================================================================
