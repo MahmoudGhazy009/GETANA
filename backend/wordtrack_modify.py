@@ -9,6 +9,10 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import tweepy
+import json
+import re
+import string
+
 #from sklearn.metrics.pairwise import cosine_similarity
 #from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -19,7 +23,15 @@ access_token_secret = "BYLJ36d7n0xr7VMPvfd9BOAeVQRoylueXbNf4vZ4Z16vT"
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
+table = str.maketrans({key: None for key in string.punctuation})
 
+
+country_map = pd.read_csv('Country Codes.csv',header=0,usecols=[0,1,2],names=['country','code2','code3'])
+country_map['country'] = country_map['country'].str.lower()
+country_map['code3'] = country_map['code3'].str.lower()
+country_map['code2'] = country_map['code2'].str.lower()
+country_map = country_map.set_index('country')
+country_map = country_map.to_dict()
 
 class Wordtrack:
     
@@ -67,7 +79,8 @@ class Wordtrack:
         timeline_analysis={}
         timeline_analysis['timeline'] = []
         timeline_analysis['analysis']=[]            
-
+        
+        self.locat = []
         
         for i,tweet in enumerate(self.tweets):
 
@@ -92,17 +105,26 @@ class Wordtrack:
             
             if tweet.place is None:
                 if tweet.user.location is None:
-                    location = None
-                else:
-                    temp = tweet.user.location.split(',')
-                    if len(temp)>1:
-                        location = temp[1].strip()
-                    else:
-                        location = temp[0].strip()
+                    location = (' ','no')
+                else:                    
+                    loc = re.sub(r'\d+',r'',tweet.user.location).split(',')[-1].strip().lower()
+                    location = (loc,'user')
             else:
-                location = tweet.place.country   
+                location = (tweet.place.country.strip(),'tweet')
             
+            for value in country_map.values():
+                self.flag = 0
+                for country, code in value.items():
+                    if (country in location) or (code in location):
+                        location = (country,'map')
+                        self.flag = 1
+                        break
+                if self.flag:
+                    break
+            self.locat.append(location[0])            
             
+            location = (location[0].capitalize(),location[1])
+#            
 #                retweets                
             try:
                 if tweet.retweeted_status:
@@ -148,7 +170,7 @@ class Wordtrack:
             app[tweet.source] += 1
             content[contentv] += 1
             tweet_type[typev] += 1
-            place[location] += 1
+            place[location[0]] += 1
     
             hasht = tweet.entities['hashtags']
             for i in range(len(hasht)):
@@ -161,15 +183,17 @@ class Wordtrack:
         day_of_week = self.track_df['created_at'].dt.day_name().value_counts().to_dict()
         active_hours = self.track_df['created_at'].dt.hour.value_counts().to_dict()
 #        days = self.track_df['created_at'].dt.day.value_counts().to_dict()
-        active_time = self.track_df.set_index('created_at').resample('D').count()['tweet'].to_dict()
+        active_time = self.track_df.set_index('created_at')[['tweet']].resample('D').count()
+        active={}    
+        for date,row in active_time.iterrows():
+            active[str(date)] = int(row['tweet'])
         
-
         timeline_analysis['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
                             "freq_tweet_hashtag" : dict(hash_num),
                             "distribution" : dict(place),
-                            "time" : active_time,
+                            "time" : active,
                             "day_of_week" : day_of_week,
                             "hours" : active_hours
                             })
@@ -177,6 +201,7 @@ class Wordtrack:
         
         return timeline_analysis
     
+
 
 # =============================================================================
 #     
