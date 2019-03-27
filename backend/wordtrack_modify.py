@@ -79,7 +79,6 @@ class Wordtrack:
         place =  Counter()
         timeline_analysis={}
         timeline_analysis['timeline'] = []
-        timeline_analysis['analysis']=[]            
         
         self.locat = []
         
@@ -106,25 +105,25 @@ class Wordtrack:
             
             if tweet.place is None:
                 if tweet.user.location is None:
-                    location = (' ','no')
+                    location = ' '
                 else:                    
                     loc = re.sub(r'\d+',r'',tweet.user.location).split(',')[-1].strip().lower()
-                    location = (loc,'user')
+                    location = loc
             else:
-                location = (tweet.place.country.strip(),'tweet')
+                location = tweet.place.country.strip()
             
             for value in country_map.values():
                 self.flag = 0
                 for country, code in value.items():
-                    if (country in location[0]) or (code in location[0]):
-                        location = (country,'map')
+                    if (country in location) or (code in location):
+                        location = country_map['code2'][country]
                         self.flag = 1
                         break
                 if self.flag:
                     break
-            self.locat.append(location[0])            
             
-            location = (location[0].capitalize(),location[1])
+            
+            location = location.upper()
 #            
 #                retweets                
             try:
@@ -171,7 +170,7 @@ class Wordtrack:
             app[tweet.source] += 1
             content[contentv] += 1
             tweet_type[typev] += 1
-            place[location[0]] += 1
+            place[location] += 1
     
             hasht = tweet.entities['hashtags']
             for i in range(len(hasht)):
@@ -189,7 +188,7 @@ class Wordtrack:
         for date,row in active_time.iterrows():
             active[str(date)] = int(row['tweet'])
         
-        timeline_analysis['analysis'].append({"freq_tweet_app" : dict(app),#.most_common(5),
+        timeline_analysis['analysis'] = {"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
                             "freq_tweet_hashtag" : dict(hash_num),
@@ -197,13 +196,12 @@ class Wordtrack:
                             "time" : active,
                             "day_of_week" : day_of_week,
                             "hours" : active_hours
-                            })
+                            }
   
         
         return timeline_analysis
     
 
-word = Wordtrack('allah')
 
 
 # =============================================================================
