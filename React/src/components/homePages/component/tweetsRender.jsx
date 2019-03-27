@@ -40,7 +40,7 @@ class TweetsRender extends Form {
    // const {data: tweets}=await getTweets();
 console.log('hiii');
    this.setState({tweets})
-    console.log("hoo", tweets.analysis[0].freq_tweet_hashtag);
+    console.log("hoo", tweets.analysis.freq_tweet_hashtag);
    // console.log("here what back",tweets);
   };
 
@@ -82,9 +82,9 @@ console.log('hiii');
         {this.state.tweets.timeline.length>2 &&
         
       <div>      
-                {console.log(this.state.tweets.analysis[0].freq_tweet_type,'freq_tweet_type')}
-                <div style={{width:500,height:400,marginLeft:420,marginTop:50}}><Doughnutt data={this.state.tweets.analysis[0].freq_tweet_type}/></div>
-         <WordCloud words={this.state.tweets.analysis[0].freq_tweet_hashtag}/>
+                {console.log(this.state.tweets.analysis.freq_tweet_type,'freq_tweet_type')}
+                <div style={{width:500,height:400,marginLeft:420,marginTop:50}}><Doughnutt data={this.state.tweets.analysis.freq_tweet_type}/></div>
+         <WordCloud words={this.state.tweets.analysis.freq_tweet_hashtag}/>
       <Tweets tweet={this.state.tweets.timeline}/>
       </div>}
 <AnalysisIcon/>

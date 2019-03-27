@@ -37,6 +37,7 @@ const TweetSchema = new mongoose.Schema({
 const Tweet = mongoose.model("tweets", TweetSchema); //
 //==============================//
 
+
 const app = express();
 app.use(express.json());
 
@@ -53,6 +54,7 @@ app.post("/api/HashTag", async (req, res) => {
   console.log(c[c.length - 1]["search"], "opopo");
   //=====----communicate with python---//
   const word = c[c.length - 1]["search"];
+
 
   tweets = await sendToPython(word, res, tweets);
   await console.log("fffffff", tweets);

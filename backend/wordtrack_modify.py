@@ -25,7 +25,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 table = str.maketrans({key: None for key in string.punctuation})
 
-
+"""
 country_map = pd.read_csv('Country Codes.csv',header=0,usecols=[0,1,2],names=['country','code2','code3'])
 country_map.fillna(' ')
 country_map['country'] = country_map['country'].str.lower()
@@ -33,7 +33,7 @@ country_map['code3'] = country_map['code3'].str.lower()
 country_map['code2'] = country_map['code2'].str.lower()
 country_map = country_map.set_index('country')
 country_map = country_map.to_dict()
-
+"""
 class Wordtrack:
     
     def __init__(self,query,tweets_count=100):
@@ -101,8 +101,7 @@ class Wordtrack:
                 contentv = 'url'
             else:
                 contentv = 'text'
-            
-            
+            """
             if tweet.place is None:
                 if tweet.user.location is None:
                     location = ' '
@@ -124,7 +123,7 @@ class Wordtrack:
             
             
             location = location.upper()
-#            
+            """
 #                retweets                
             try:
                 if tweet.retweeted_status:
@@ -163,14 +162,14 @@ class Wordtrack:
                         "application" : tweet.source,
                         "created_at" : str(tweet.created_at),
                         "content" : contentv,
-                        "photo" : photo,
-                        "location" : location
+                        "photo" : photo
+#                        "location" : location
                         })
             
             app[tweet.source] += 1
             content[contentv] += 1
             tweet_type[typev] += 1
-            place[location] += 1
+            #place[location] += 1
     
             hasht = tweet.entities['hashtags']
             for i in range(len(hasht)):
@@ -179,7 +178,7 @@ class Wordtrack:
 #            self.track_df.loc[i,'gender'] = self.gender_predict(tweet.user.name.lower())
 #        hour = self.track_df['created_at'].resample('H').count()   
                 # create at index
-        
+        """
         day_of_week = self.track_df['created_at'].dt.day_name().value_counts().to_dict()
         active_hours = self.track_df['created_at'].dt.hour.value_counts().to_dict()
 #        days = self.track_df['created_at'].dt.day.value_counts().to_dict()
@@ -187,15 +186,15 @@ class Wordtrack:
         active={}    
         for date,row in active_time.iterrows():
             active[str(date)] = int(row['tweet'])
-        
+        """
         timeline_analysis['analysis'] = {"freq_tweet_app" : dict(app),#.most_common(5),
                             "freq_tweet_content" : dict(content),
                             "freq_tweet_type" : dict(tweet_type),
-                            "freq_tweet_hashtag" : dict(hash_num),
-                            "distribution" : dict(place),
-                            "time" : active,
-                            "day_of_week" : day_of_week,
-                            "hours" : active_hours
+                            "freq_tweet_hashtag" : dict(hash_num)
+           #                 "distribution" : dict(place),
+            #                "time" : active,
+             #               "day_of_week" : day_of_week,
+              #              "hours" : active_hours
                             }
   
         

@@ -16,4 +16,3 @@ word = Wordtrack(lines)
 json_object = word.analysis()
 
 print(json.dumps(json_object))
-
