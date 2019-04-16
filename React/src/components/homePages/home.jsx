@@ -46,7 +46,12 @@ class Home extends Component {
                         >
                           <div className="col-md-4 borders">
                             <div className="feature text-center">
-                              <RegularIcon iconName={"fa fa-lightbulb-o"} />
+                              <Link
+                                className="navbar-brand scroll"
+                                to="/person"
+                              >
+                                <RegularIcon iconName={"fa fa-lightbulb-o"} />
+                              </Link>
 
                               <h3 style={{ color: "blueviolet" }}>Track</h3>
                               <div className="gg my-3" />
@@ -55,7 +60,12 @@ class Home extends Component {
 
                           <div className="col-md-4 borders">
                             <div className="feature text-center">
-                              <RegularIcon iconName={"fa fa-heart-o"} />
+                              <Link
+                                className="navbar-brand scroll"
+                                to="/explore"
+                              >
+                                <RegularIcon iconName={"fa fa-heart-o"} />
+                              </Link>
 
                               <h3 style={{ color: "blueviolet" }}>Explore</h3>
                               <div className="gg my-3" />

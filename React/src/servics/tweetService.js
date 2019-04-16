@@ -15,8 +15,8 @@ export function getTweet(tweetId) {
   return http.get(tweetUrl(tweetId));
 }
 
-export function sendTweet(word) {
-  return http.post(apiEndpoint, word);
+export function sendTweet(url, word) {
+  return http.post(apiUrl + url, word);
 }
 
 export function deleteTweet(tweetId) {

@@ -14,5 +14,4 @@ import sys
 lines = sys.stdin.readlines()[0].replace('"',"").replace("\n","")
 word = Wordtrack(lines)
 json_object = word.analysis()
-
 print(json.dumps(json_object))

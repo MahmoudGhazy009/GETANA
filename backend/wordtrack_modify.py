@@ -53,7 +53,7 @@ class Wordtrack:
         tweets=[]
         while iterr_num:
             try:
-                tweets.extend(api.search(lang="en",q=self.query,count = 500, result_type="recent",include_rts = False, tweet_mode = 'extended',max_id=self.max_id))
+                tweets.extend(api.search(lang="en",q=self.query,count = 40, result_type="recent",include_rts = False, tweet_mode = 'extended',max_id=self.max_id))
                 self.max_id = (int(tweets[-1].id_str[:4])) * (10**15) #day by day
                 iterr_num-=1
             except :

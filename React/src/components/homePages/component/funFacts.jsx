@@ -33,9 +33,14 @@ const FunFacts = () => {
               <div className="feature ">
                 <FontAwesomeIcon
                   icon="thumbs-up"
-                  style={{ color: "red", fontSize: 40, marginLeft: 100 }}
+                  style={{
+                    color: "#f9461d",
+                    fontSize: 40,
+                    marginLeft: 100,
+                    marginTop: 15
+                  }}
                 />
-                <h1 style={{ marginTop: 50 }}>2780</h1>
+                <h1 style={{ marginTop: 35 }}>2780</h1>
                 <p>PROJECTS</p>
               </div>
             </div>
@@ -44,15 +49,14 @@ const FunFacts = () => {
                 <FontAwesomeIcon
                   icon="smile"
                   style={{
-                    color: "red",
+                    color: "#f9461d",
                     fontSize: 50,
                     marginLeft: 90,
                     paddingTop: 10
                   }}
                 />
-                <i className="fa fa-smile" />
 
-                <h1>487</h1>
+                <h1 style={{ marginTop: 40 }}>487</h1>
                 <p className="mt-6">CLIENTS</p>
               </div>
             </div>

@@ -4,14 +4,14 @@ class ProgressBars extends Component {
   render() {
     return (
       <div>
-        <ProgressBar className="mt-2" animated variant="success" now={45} />
-        <ProgressBar className="mt-2" variant="warning" now={45} />
+        {/*<ProgressBar className="mt-2" animated variant="success" now={45} />
+        <ProgressBar className="mt-2" variant="warning" now={45} />*/}
         <ProgressBar
           className="mt-2"
+          style={{ width: 450, height: 20 }}
           variant="info"
-          striped
-          label={65}
-          now={65}
+          label={"hijkkkkkkkjkkkkkk"}
+          now={100}
         />
       </div>
     );

@@ -70,8 +70,11 @@ class Feature extends Component {
             </div>
             <div className="col-sm">
               <div className="feature text-center ">
-                <RegularIcon iconName={"fa fa-steam-square"} />
-                <h3 className="margineText">STREAM</h3>
+                <Link className="navbar-brand scroll" to="/person">
+                  <RegularIcon iconName={"fa fa-steam-square"} />
+                </Link>
+
+                <h3 className="margineText">Person</h3>
                 <div className="gg my-3" />
                 <p className="text-center">000</p>
               </div>

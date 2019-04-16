@@ -98,7 +98,10 @@ class About extends Component {
             </div>
           </div>
 
-          <div className="row">
+          <div
+            className="row"
+            style={{ marginLeft: 250, marginTop: 50, width: "100%" }}
+          >
             <div className="col-md-4">
               <div className="featurez">
                 <div className="d">
@@ -111,7 +114,7 @@ class About extends Component {
               </div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-4" style={{ marginLeft: 50 }}>
               <div className="featurez">
                 <div className="d">
                   <h2>

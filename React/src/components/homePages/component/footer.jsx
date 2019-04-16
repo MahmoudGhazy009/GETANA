@@ -4,10 +4,18 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <React.Fragment>
+    <div
+      style={{
+        position: "relative",
+        bottom: 0,
+        width: "100%"
+      }}
+    >
       <div
         className="row justify-content-md-center"
-        style={{ backgroundColor: "#fff" }}
+        style={{
+          backgroundColor: "#fff"
+        }}
       >
         <div className="col-md-3 col-md-offset-3 m-3 text-center py-3">
           <Link className="fb-ic" to="">
@@ -33,7 +41,7 @@ const Footer = () => {
         © 2018 Copyright:
         <Link to="">MDBootstrap.com</Link>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

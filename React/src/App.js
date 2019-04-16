@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import Graphs from "./components/DataForGraphs";
-import Bubbless from "./components/Graphs/Buble";
-import ProgressBars from "./components/charts/progressBar";
 import "./App.css";
-import SimpleMap from "./components/map";
 import Home from "./components/homePages/home";
 import Footer from "./components/homePages/component/footer";
 import NavBar from "./components/homePages/component/navBar";
@@ -15,6 +11,7 @@ import Feature from "./components/homePages/feature";
 import LoginForm from "./components/homePages/login";
 import RegisterForm from "./components/homePages/registerForm";
 import TweetsRender from "./components/homePages/component/tweetsRender";
+import PersonAnalysis from "./components/homePages/Person Analysis";
 class App extends Component {
   render() {
     return (
@@ -29,6 +26,7 @@ class App extends Component {
           <Route path="/login" component={LoginForm} />
           <Route path="/registerForm" component={RegisterForm} />
           <Route path="/explore" component={TweetsRender} />
+          <Route path="/person" component={PersonAnalysis} />
           <Redirect from="/" exact to="/home" />
         </Switch>
         {/*<div className="row justify-content-md-center">
