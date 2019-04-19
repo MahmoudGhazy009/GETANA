@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 class ProgressBars extends Component {
+  state = { label: this.props.label, value: this.props.value };
   render() {
     return (
       <div>
@@ -10,8 +11,8 @@ class ProgressBars extends Component {
           className="mt-2"
           style={{ width: 450, height: 20 }}
           variant="info"
-          label={"hijkkkkkkkjkkkkkk"}
-          now={100}
+          label={this.state.label}
+          now={this.state.value}
         />
       </div>
     );

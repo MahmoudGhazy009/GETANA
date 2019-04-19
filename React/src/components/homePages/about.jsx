@@ -6,6 +6,13 @@ import logo from "./images/about-1.jpg";
 import about1 from "./images/about-1.jpg";
 import about2 from "./images/about-2.jpg";
 import about3 from "./images/about-3.jpg";
+
+import khaled from "./images/sief.png";
+import amr from "./images/amr.jpg";
+import ghazy from "./images/ghazy.png";
+import zeyad from "./images/zeyad.jpeg";
+import khalid from "./images/khalid.png";
+
 import FunFacts from "./component/funFacts";
 class About extends Component {
   state = {};
@@ -69,7 +76,7 @@ class About extends Component {
                       <div className="gg" style={{ marginTop: 20 }} />
                     </h2>
                   </div>
-                  <img src={logo} alt="Amr Khaled" />
+                  <img src={amr} alt="Amr Khaled" />
                 </div>
               </div>
               <div className="col-md-4">
@@ -80,7 +87,7 @@ class About extends Component {
                       <div className="gg" style={{ marginTop: 20 }} />
                     </h2>
                   </div>
-                  <img src={logo} alt="Mahmoud Ghazy" />
+                  <img src={ghazy} alt="Mahmoud Ghazy" />
                 </div>
               </div>
 
@@ -92,7 +99,7 @@ class About extends Component {
                       <div className="gg" style={{ marginTop: 20 }} />
                     </h2>
                   </div>
-                  <img src={logo} alt="Khalid Amer" />
+                  <img src={khalid} alt="Khalid Amer" />
                 </div>
               </div>
             </div>
@@ -110,7 +117,7 @@ class About extends Component {
                     <div className="gg" style={{ marginTop: 20 }} />
                   </h2>
                 </div>
-                <img src={logo} alt="Zeyad Elsawy" />
+                <img src={zeyad} alt="Zeyad Elsawy" />
               </div>
             </div>
 
@@ -122,7 +129,7 @@ class About extends Component {
                     <div className="gg" style={{ marginTop: 20 }} />
                   </h2>
                 </div>
-                <img src={logo} alt="Khaled Seif" />
+                <img src={khaled} alt="Khaled Seif" />
               </div>
             </div>
           </div>

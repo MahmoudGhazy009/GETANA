@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "../images/logo.png";
+import logo2 from "../images/logo2.png";
 import { NavLink, Link } from "react-router-dom";
 
 class NavBar extends Component {
@@ -24,7 +24,7 @@ class NavBar extends Component {
                 <span className="navbar-toggler-icon" />
               </button>
               <Link className="navbar-brand scroll" to="/Home">
-                <img src={logo} alt="logo" className="brand_logo" />
+                <img src={logo2} alt="logo" className="brand_logo" />
               </Link>
             </div>
 

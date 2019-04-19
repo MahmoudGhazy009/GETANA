@@ -17,7 +17,7 @@ class Tweets extends Component {
   };
   render() {
     const { movies: tweet } = this.getPagedData();
-    console.log(tweet);
+    console.log(tweet, "hioioi");
     return (
       <div>
         {tweet.map((item, index) => (

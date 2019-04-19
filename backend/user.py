@@ -30,7 +30,7 @@ def usertrack(user_id,api):
         itter_num=10
     while itter_num:
         try:
-            tweets.extend(api.user_timeline(screen_name = user_id, count= 100, include_rts = True, exclude_replies=False, tweet_mode = 'extended',max_id=None))
+            tweets.extend(api.user_timeline(screen_name = user_id, count= 50, include_rts = True, exclude_replies=False, tweet_mode = 'extended',max_id=None))
 
             max_id = tweets[-1].id
             itter_num -= 1
@@ -130,6 +130,8 @@ def usertrack(user_id,api):
     likes = tweet_df['likes'].sum()
     
 #        need add num of replies
+    tw=tweet_df['tweet'].tolist() 
+    tw=tw[:50] 
     engagement = (likes + retweet_count)*100/(num_followers + num_tweets)
     most_freq_app = tweet_df['application'].value_counts()
     most_quoted_user = tweet_df[tweet_df['type']=='quote']['most_user'].value_counts()[:10]
@@ -137,9 +139,15 @@ def usertrack(user_id,api):
     most_retweet_user = tweet_df[tweet_df['type']=='retweet']['most_user'].value_counts()[:10]
     content = tweet_df['content'].value_counts()
     tweet_type = tweet_df['type'].value_counts()
+    num_reply_users=len(most_reply_user.keys().tolist())
+    num_quoted_users=len(most_quoted_user.keys().tolist())
+    num_retweet_users=len(most_retweet_user.keys().tolist())
     #day_of_week = tweet_df['created_at'].dt.day_name()
     return json.dumps(
-        {"followers":num_followers,
+        {
+        "screenName":user.screen_name,
+        "userId":user_id,    
+        "followers":num_followers,
         "following":num_following,
         "total number of tweets":num_tweets,
         "location":location,
@@ -150,10 +158,30 @@ def usertrack(user_id,api):
         "num_tweets":num_tweets,
         "likes":likes,
         "most_freq_app":dict(zip(most_freq_app.keys().tolist(),most_freq_app.tolist())),
+        "progressquoted":[
+        {"user":most_quoted_user.keys().tolist()[0],'value':most_quoted_user.tolist()[0]},
+       { "user":most_quoted_user.keys().tolist()[1],'value':most_reply_user.tolist()[1]},
+        {"user":most_quoted_user.keys().tolist()[-1],'value':most_retweet_user.tolist()[-1]}
+
+        ],
+        "progressreply":[{
+        "user":most_reply_user.keys().tolist()[0],'value':most_reply_user.tolist()[0]}
+        ,{"user":most_reply_user.keys().tolist()[1],'value':most_reply_user.tolist()[1]},
+        {
+        "user":most_reply_user.keys().tolist()[2],'value':most_reply_user.tolist()[2]}
+        ],         
+        "progressretweet":[
+        {"user":most_retweet_user.keys().tolist()[0],'value':most_retweet_user.tolist()[0]},
+        {"user":most_retweet_user.keys().tolist()[1],'value':most_retweet_user.tolist()[1]},
+        {"user":most_retweet_user.keys().tolist()[-1],'value':most_retweet_user.tolist()[-1]}
+        
+        ],
         "most_quoted_user":dict(zip(most_quoted_user.keys().tolist(),most_quoted_user.tolist())),
         "most_reply_user":dict(zip(most_reply_user.keys().tolist(),most_reply_user.tolist())),
         "most_retweet_user":dict(zip(most_retweet_user.keys().tolist(),most_retweet_user.tolist())),
         "content":dict(zip(content.keys().tolist(),content.tolist())),
-        "tweet_type":dict(zip(tweet_type.keys().tolist(),tweet_type.tolist()))})
+        "tweet_type":dict(zip(tweet_type.keys().tolist(),tweet_type.tolist())),
+        "tweets":tw
+        })
 lines = sys.stdin.readlines()[0].replace('"',"").replace("\n","")
 print(usertrack('@'+lines,api))    
