@@ -19,7 +19,7 @@ class FlippingCardPage extends Component {
     followers: this.props.followers,
     profilePic: this.props.profilePic,
     screenName: this.props.screenName,
-    user_id: this.props["user_id"]
+    userId: this.props.userId
   };
   render() {
     return (
@@ -59,7 +59,7 @@ class FlippingCardPage extends Component {
                     className="font-weight-bold mt-5"
                     style={{ paddingTop: "30px", color: "#fbfdfe" }}
                   >
-                    {this.state.screenName}
+                    {this.state.userId}
                   </h4>
                   <hr style={{ background: "#fff", width: "50%" }} />
                   <div className="contaire bord">

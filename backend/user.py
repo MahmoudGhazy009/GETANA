@@ -21,6 +21,7 @@ def usertrack(user_id,api):
     likes = user.favourites_count
     location = user.location
     profileurl= 'https://twitter.com/{}'.format(user.screen_name)
+    pic=user.profile_image_url
     tweets=[]
     itter_num = int(num_tweets/100)
     if itter_num<1:
@@ -151,7 +152,7 @@ def usertrack(user_id,api):
         "following":num_following,
         "total number of tweets":num_tweets,
         "location":location,
-        "profile pic":profileurl,
+        "profile pic":pic,
         "engagement":engagement,
         "retweet_count":retweet_count,
         "hashtag":hashtag,

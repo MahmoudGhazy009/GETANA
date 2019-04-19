@@ -81,7 +81,7 @@ class PersonAnalysis extends Form {
             following={this.state.tweets.following}
             followers={this.state.tweets.followers}
             profilePic={this.state.tweets["profile pic"]}
-            user_id={this.state.tweets["user_id"]}
+            userId={this.state.tweets.userId}
             screenName={this.state.tweets.screenName}
           />
         )}
