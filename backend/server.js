@@ -1,4 +1,5 @@
 const express = require("express");
+const utf8 = require("utf8");
 //--------for connect with python file-------//
 let { PythonShell } = require("python-shell");
 let options = {
@@ -61,7 +62,7 @@ app.post("/api/HashTag", async (req, res) => {
 });
 //------------------------------//
 async function sendToPython(word, res, tweets) {
-  let pyshell = new PythonShell("try.py", options);
+  let pyshell = new PythonShell("pr/code/main/try.py", options);
   pyshell.send(word);
   pyshell.on("message", function(message) {
     // received a message sent from the Python script (a simple "print" statement)
@@ -106,7 +107,7 @@ app.post("/api/Person", async (req, res) => {
 });
 //------------------------------//
 async function sendToPython2(word, res, tweets) {
-  let pyshell = new PythonShell("user.py", options);
+  let pyshell = new PythonShell("pr/code/main/usertrack.py", options);
   pyshell.send(word);
   pyshell.on("message", function(message) {
     // received a message sent from the Python script (a simple "print" statement)

@@ -18,11 +18,11 @@ const wrapperStyles = {
 };
 
 const cityScale = scaleLinear()
-  .domain([0, 37843000])
+  .domain([0, 10])
   .range([1, 15]);
 
 class BasicMap extends Component {
-  state = { cities: [] };
+  state = { cities: [], data: this.props.data };
   componentDidMount() {
     this.fetchCities();
   }
@@ -33,7 +33,7 @@ class BasicMap extends Component {
     return (
       <div style={wrapperStyles}>
         <ComposableMap
-          projectionConfig={{ scale: 150 }}
+          projectionConfig={{ scale: 200 }}
           width={980}
           height={551}
           style={{
@@ -77,7 +77,7 @@ class BasicMap extends Component {
               }
             </Geographies>
             <Markers>
-              {CT.map((city, i) => (
+              {this.state.data.map((city, i) => (
                 <Marker key={i} marker={city}>
                   <circle
                     cx={0}

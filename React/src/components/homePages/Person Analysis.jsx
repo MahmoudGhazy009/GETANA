@@ -4,14 +4,19 @@ import Form from "./component/form";
 import searchLogo from "./images/searchLogo.png";
 import UserBio from "./component/userBio";
 import ProgressBars from "./../charts/progressBar";
+import ReactLoading from "react-loading";
 
 import { sendTweet } from "./../../servics/tweetService";
 import { Redirect } from "react-router-dom";
-import Piee from "../Graphs/pie";
 import BasicMap from "./../Graphs/map";
 import Doughnutt from "./../Graphs/Doughnut";
 import Card from "./component/tweetCard";
 import FlippingCardPage from "./component/cardFlip";
+import WordCloud from "./component/wordCloud";
+import AnalysisIcon from "./component/wordAnalysis";
+import Lines from "../Graphs/line";
+import Tweets from "./component/tweets";
+import Piee from "./../Graphs/pie";
 class PersonAnalysis extends Form {
   state = {
     searchQuery: "",
@@ -19,7 +24,7 @@ class PersonAnalysis extends Form {
 
     data: { search: "" },
     errors: {},
-    tweets: { timeline: [{ name: "8", user_pic: "#" }] }
+    tweets: { timeline: [] }
   };
   schema = {
     search: Joi.string()
@@ -60,7 +65,7 @@ class PersonAnalysis extends Form {
             alt="searchLogo"
             style={{ paddingTop: 80, paddingBottom: 10 }}
           />
-          <div style={{ marginBottom: 70 }}>
+          <div style={{ marginBottom: 0 }}>
             <form onSubmit={this.handleSubmit}>
               {this.renderInput("search")}
               <div
@@ -74,152 +79,130 @@ class PersonAnalysis extends Form {
           </div>
         </div>
         {/* <BasicMap />*/}
-        {this.state.tweets.followers > 2 && (
-          <FlippingCardPage
-            numTweets={this.state.tweets["num_tweets"]}
-            likes={this.state.tweets.likes}
-            following={this.state.tweets.following}
-            followers={this.state.tweets.followers}
-            profilePic={this.state.tweets["profile pic"]}
-            userId={this.state.tweets.userId}
-            screenName={this.state.tweets.screenName}
-          />
-        )}
-        {console.log(this.state.tweets, "hhhh")}
-        {this.state.tweets.followers > 2 && (
-          <div
-            style={{
-              paddingLeft: 40,
-              border: "1px solid #e1e8ed",
-              borderRadius: 5,
-              margin: "auto",
-              width: 500,
-              padding: 2,
-              marginBottom: 15
-            }}
-          >
-            <form className="form-inline">
-              <div className="form-group mx-sm-3 mb-2">
-                <h3>progressreply</h3>
-              </div>
-            </form>
-            <form className="form-inline">
-              {this.state.tweets.progressreply.map((item, index) => (
-                <div className="row ">
-                  <div className="col-6">
-                    <div>
-                      <ProgressBars label={item.user} value={item.value} />
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <h3 style={{ marginLeft: 200 }}>{item.value}</h3>
-                  </div>
-                </div>
-              ))}
-            </form>
-          </div>
-        )}
-        {this.state.tweets.followers > 2 && (
-          <div
-            style={{
-              paddingLeft: 40,
-              border: "1px solid #e1e8ed",
-              borderRadius: 5,
-              margin: "auto",
-              width: 500,
-              padding: 2,
-              marginBottom: 15
-            }}
-          >
-            <form className="form-inline">
-              <div className="form-group mx-sm-3 mb-2">
-                <h3>progressretweet</h3>
-              </div>
-            </form>
-            <form className="form-inline">
-              {this.state.tweets.progressretweet.map((item, index) => (
-                <div className="row ">
-                  <div className="col-6">
-                    <div>
-                      <ProgressBars label={item.user} value={item.value} />
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <h3 style={{ marginLeft: 200 }}>{item.value}</h3>
-                  </div>
-                </div>
-              ))}
-            </form>
-          </div>
-        )}
-
-        {this.state.tweets.followers > 2 && (
-          <div
-            style={{
-              paddingLeft: 40,
-              border: "1px solid #e1e8ed",
-              borderRadius: 5,
-              margin: "auto",
-              width: 500,
-              padding: 2,
-              marginBottom: 15
-            }}
-          >
-            <form className="form-inline">
-              <div className="form-group mx-sm-3 mb-2">
-                <h3>progressquoted</h3>
-              </div>
-            </form>
-            <form className="form-inline">
-              {this.state.tweets.progressquoted.map((item, index) => (
-                <div className="row">
-                  <div className="col-6">
-                    <div>
-                      <ProgressBars label={item.user} value={item.value} />
-                    </div>
-                  </div>
-
-                  <div className="col-6">
-                    <h3 style={{ marginLeft: 200 }}>{item.value}</h3>
-                  </div>
-                </div>
-              ))}
-            </form>
-          </div>
-        )}
-        {this.state.tweets.followers > 2 && (
-          <div>
-            <h1>followers</h1>
-            <h1>{this.state.tweets.followers} </h1>
-            <h1>num_tweets</h1>
-            <h1>{this.state.tweets["num_tweets"]} </h1>
-            <h1>likes</h1>
-            <h1>{this.state.tweets.likes} </h1>
-            <h1>total number of tweets</h1>
-            <h1>{this.state.tweets["total number of tweets"]} </h1>
-            <h1>retweet_count</h1>
-            <h1>{this.state.tweets["retweet_count"]} </h1>
+        {this.state.tweets.timeline.length < 1 &&
+          (this.state.clicked && (
             <div
               style={{
-                paddingLeft: 40,
-                border: "1px solid #e1e8ed",
-                borderRadius: 5,
-                margin: "auto",
-                width: 600,
-                padding: 2
+                marginLeft: 630
               }}
             >
-              <form className="form-inline">
-                <div className="form-group mx-sm-3 mb-2">
-                  <ProgressBars />
-                </div>
-                <span>COUNT</span>
-              </form>
-              <Piee data={this.state.tweets.content} />
-              <Doughnutt data={this.state.tweets["tweet_type"]} />
+              <ReactLoading
+                type="bubbles"
+                color="#2e98cc"
+                height={100}
+                width={100}
+              />
+              {/*
+              <ClipLoader
+                sizeUnit={"px"}
+                size={150}
+                color={"#2e98cc"}
+                loading={true}
+              />*/}
+            </div>
+          ))}
+        {this.state.tweets.timeline.length >= 1 && (
+          <FlippingCardPage
+            numTweets={this.state.tweets.cards.num_tweets}
+            following={this.state.tweets.cards.following}
+            followers={this.state.tweets.cards.followers}
+            profilePic={this.state.tweets.cards.profile_pic}
+            screenName={this.state.tweets.cards.screen_name}
+            userId={this.state.tweets.cards.name}
+            profile_banner={this.state.tweets.cards.profile_banner}
+            profile_url={this.state.tweets.cards.profile_url}
+            likes={this.state.tweets.cards.likes}
+          />
+        )}
+
+        {/*this.state.tweets.timeline.length >= 1 && (
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <Lines
+                  data={this.state.tweets.analysis.day_of_month}
+                  name={"ACTIVE DAYS"}
+                />
+              </div>
+              <div className="col">
+                <Lines
+                  data={this.state.tweets.analysis.day_of_week}
+                  name={"ACTIVE DAYS IN WEEK"}
+                />
+              </div>
+              <div className="col">
+                <Lines
+                  data={this.state.tweets.analysis.hours}
+                  name={"ACTIVE HOURS"}
+                />
+              </div>
             </div>
           </div>
+        )*/}
+        {this.state.tweets.timeline.length >= 1 && (
+          <div>
+            <div
+              style={{
+                width: 500,
+                height: 1000,
+                marginLeft: 420,
+                marginTop: 0
+              }}
+            >
+              <Lines
+                data={this.state.tweets.analysis.day_of_month}
+                name={"ACTIVE DAYS"}
+              />
+              <Lines
+                data={this.state.tweets.analysis.day_of_week}
+                name={"ACTIVE DAYS IN WEEK"}
+              />
+              <Lines
+                data={this.state.tweets.analysis.hours}
+                name={"ACTIVE HOURS"}
+              />
+              {console.log(this.state.tweets, "77")}
+              <AnalysisIcon data={this.state.tweets.analysis.freq_tweet_app} />
+              <Doughnutt data={this.state.tweets.analysis.freq_tweet_type} />
+            </div>
+
+            {console.log(
+              this.state.tweets.timeline,
+              "this.state.tweets.timeline"
+            )}
+            <WordCloud words={this.state.tweets.analysis.freq_tweet_hashtag} />
+
+            <div
+              style={{
+                width: 500,
+                height: 400,
+                marginLeft: 420,
+                marginTop: 0
+              }}
+            >
+              <Piee data={this.state.tweets.analysis.freq_tweet_content} />
+            </div>
+            <ProgressBars
+              data={this.state.tweets.analysis.most_quoted_user}
+              name="Most Quoted User"
+            />
+
+            <ProgressBars
+              data={this.state.tweets.analysis.most_replied_user}
+              name="Most Replied User"
+            />
+
+            <ProgressBars
+              data={this.state.tweets.analysis.most_retweeted_user}
+              name="Most Retweeted User"
+            />
+
+            <Tweets tweet={this.state.tweets.timeline} />
+          </div>
         )}
+        {/*this.state.tweets.timeline.length >= 1 && (
+          <BasicMap data={this.state.tweets.analysis.distribution} />
+        )*/}
       </React.Fragment>
     );
   }

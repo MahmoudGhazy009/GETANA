@@ -18,16 +18,28 @@ const Footer = () => {
         }}
       >
         <div className="col-md-3 col-md-offset-3 m-3 text-center py-3">
-          <Link className="fb-ic" to="">
+          <a
+            className="fb-ic"
+            href="https://www.facebook.com/Twitter-Olive-2604548039765013/?modal=admin_todo_tour"
+            target="_blank"
+          >
             <i className="fa fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x" />
-          </Link>
-          <Link className="tw-ic" to="">
+          </a>
+          <a
+            className="tw-ic"
+            href="https://twitter.com/TweetOlive1"
+            target="_blank"
+          >
             <i className="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x" />
-          </Link>
+          </a>
 
-          <Link className="ins-ic" to="">
+          <a
+            className="ins-ic"
+            href="https://www.instagram.com/twitterolive/"
+            target="_blank"
+          >
             <i className="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x" />
-          </Link>
+          </a>
           <Link className="pin-ic" to="">
             <i className="fa fa-pinterest fa-lg white-text fa-2x" />
           </Link>

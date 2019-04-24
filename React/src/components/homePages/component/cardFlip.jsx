@@ -19,7 +19,9 @@ class FlippingCardPage extends Component {
     followers: this.props.followers,
     profilePic: this.props.profilePic,
     screenName: this.props.screenName,
-    userId: this.props.userId
+    userId: this.props.userId,
+    profile_banner: this.props.profile_banner,
+    profile_url: this.props.profile_url
   };
   render() {
     return (
@@ -27,7 +29,7 @@ class FlippingCardPage extends Component {
         <MDBRow between>
           <MDBCol
             className="m-auto"
-            style={{ minHeight: "10rem", maxWidth: "30rem" }}
+            style={{ minHeight: "10rem", maxWidth: "50%" }}
           >
             <div className="text-center h-100 w-100">
               <MDBCard className="face front" style={{ background: "#1c2939" }}>
@@ -35,7 +37,7 @@ class FlippingCardPage extends Component {
                   <img
                     style={{ height: "200px" }}
                     className="card-img-top"
-                    src="https://mdbootstrap.com/img/Photos/Others/photo7.jpg"
+                    src={this.state.profile_banner}
                     alt=""
                   />
                 </div>
@@ -44,11 +46,12 @@ class FlippingCardPage extends Component {
                   style={{
                     borderRadius: "50%",
                     border: "10px solid #1c2939",
-                    margin: "-100px"
+                    margin: "-100px",
+                    padding: 10
                   }}
                 >
                   <img
-                    style={{ height: "150px" }}
+                    style={{ height: "auto", maxWidth: "100%" }}
                     src={this.state.profilePic}
                     alt=""
                     className="rounded-circle"
@@ -57,7 +60,7 @@ class FlippingCardPage extends Component {
                 <MDBCardBody>
                   <h4
                     className="font-weight-bold mt-5"
-                    style={{ paddingTop: "30px", color: "#fbfdfe" }}
+                    style={{ paddingTop: "40px", color: "#fbfdfe" }}
                   >
                     {this.state.userId}
                   </h4>

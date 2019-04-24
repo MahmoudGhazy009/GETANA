@@ -161,7 +161,7 @@ def usertrack(user_id,api):
         "most_freq_app":dict(zip(most_freq_app.keys().tolist(),most_freq_app.tolist())),
         "progressquoted":[
         {"user":most_quoted_user.keys().tolist()[0],'value':most_quoted_user.tolist()[0]},
-       { "user":most_quoted_user.keys().tolist()[1],'value':most_reply_user.tolist()[1]},
+        {"user":most_quoted_user.keys().tolist()[1],'value':most_reply_user.tolist()[1]},
         {"user":most_quoted_user.keys().tolist()[-1],'value':most_retweet_user.tolist()[-1]}
 
         ],

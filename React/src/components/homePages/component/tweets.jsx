@@ -2,12 +2,20 @@ import React, { Component } from "react";
 import Like from "./tweetsIcon/like";
 import Paginations from "./paginates";
 import paginate from "./paginate";
+import RegularIcon from "./regularIcon";
+import SelectTweet from "./selectTweet";
 
 class Tweets extends Component {
-  state = { pageSize: 10, currentPage: 1, tweet: this.props.tweet };
+  state = {
+    pageSize: 10,
+    currentPage: 1,
+    types: ["All", "POS", "NEG"],
+    tweet: this.props.tweet,
+    root: this.props.tweet,
+    selectedType: null
+  };
   getPagedData = () => {
     const { pageSize, currentPage, tweet } = this.state;
-
     const movies = paginate(tweet, currentPage, pageSize);
 
     return { movies };
@@ -15,11 +23,27 @@ class Tweets extends Component {
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
+  handleGenreSelect = genre => {
+    const { root } = this.state;
+    let filtered = { ...root };
+    if (genre === "POS") filtered = root.filter(m => m.sentiment === 1);
+    else if (genre === "NEG") filtered = root.filter(m => m.sentiment === 0);
+    else if (genre == "All") filtered = root;
+
+    this.setState({ tweet: filtered, selectedType: genre });
+  };
+
   render() {
     const { movies: tweet } = this.getPagedData();
+    let classes = "";
     console.log(tweet, "hioioi");
     return (
       <div>
+        <SelectTweet
+          items={this.state.types}
+          selectedItem={this.state.selectedType}
+          onItemSelect={this.handleGenreSelect}
+        />
         {tweet.map((item, index) => (
           <div
             key={index}
@@ -56,6 +80,26 @@ class Tweets extends Component {
                   </a>
                 </h4>
               </div>
+              <div className="column">
+                <h4 style={{ marginLeft: 20, marginTop: 5 }}>
+                  <a
+                    style={{ textDecoration: "none" }}
+                    href={item["user_url"]}
+                    target="_blank"
+                  />
+                  <i
+                    className={
+                      "fa fa-" +
+                      (item.sentiment === 1 ? "plus-circle" : "minus-circle")
+                    }
+                    style={{
+                      color: item.sentiment === 1 ? "green" : "red",
+                      position: "relative",
+                      right: 0
+                    }}
+                  />
+                </h4>
+              </div>
             </div>
             <div className="card-body">
               <p className="card-text">
@@ -66,6 +110,9 @@ class Tweets extends Component {
                 >
                   {item.tweet}
                 </a>
+                {item.photo[item.photo.length - 1] != "#" && (
+                  <img src={item.photo[item.photo.length - 1]} />
+                )}
               </p>
             </div>
             <Like like={item.likes} retweet={item["retweet_count"]} />
