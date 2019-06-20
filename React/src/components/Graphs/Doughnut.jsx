@@ -20,6 +20,8 @@ let chartData = {
 class Doughnutt extends Component {
   render() {
     let { data } = this.props;
+    chartData.labels = [];
+    chartData.datasets[0].data = [];
     Object.entries(data).map(([key, value]) => {
       chartData.labels.push(key);
       chartData.datasets[0].data.push(value);

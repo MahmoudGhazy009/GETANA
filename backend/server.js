@@ -1,5 +1,10 @@
 const express = require("express");
 const utf8 = require("utf8");
+
+const jwt = require("express-jwt");
+const users = require("./users");
+const auth = require("./auth");
+
 //--------for connect with python file-------//
 let { PythonShell } = require("python-shell");
 let options = {
@@ -40,7 +45,30 @@ const Tweet = mongoose.model("tweets", TweetSchema); //
 //==============================//
 
 const app = express();
+app.use(cors());
+app.use(compress());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Exctract User informations from Authorization header
+app.use(
+  jwt({
+    secret: "secret",
+    credentialsRequired: false
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.secret = secret;
+  res.locals.dbAdapter = dbAdapter;
+  next();
+});
+
+const root = express.Router();
+root.use(users);
+root.use(auth);
+
+app.use("/", root);
 
 const c = [{ id: 1, search: "l" }];
 let tweets = "";
@@ -63,7 +91,7 @@ app.post("/api/HashTag", async (req, res) => {
 //------------------------------//
 async function sendToPython(word, res, tweets) {
   let pyshell = new PythonShell("pr/code/main/try.py", options);
-  pyshell.send(word);
+  pyshell.send(encodeURI(word));
   pyshell.on("message", function(message) {
     // received a message sent from the Python script (a simple "print" statement)
     k = JSON.parse(JSON.stringify(message));
@@ -108,7 +136,7 @@ app.post("/api/Person", async (req, res) => {
 //------------------------------//
 async function sendToPython2(word, res, tweets) {
   let pyshell = new PythonShell("pr/code/main/usertrack.py", options);
-  pyshell.send(word);
+  pyshell.send(encodeURI(word));
   pyshell.on("message", function(message) {
     // received a message sent from the Python script (a simple "print" statement)
     k = JSON.parse(JSON.stringify(message));

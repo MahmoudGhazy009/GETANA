@@ -91,7 +91,7 @@ class TweetsRender extends Form {
           (this.state.clicked && (
             <div
               style={{
-                marginLeft: 630
+                margin: "auto"
               }}
             >
               <ReactLoading
@@ -140,7 +140,8 @@ class TweetsRender extends Form {
                 width: 500,
                 height: 400,
                 marginLeft: 420,
-                marginTop: 50
+                marginTop: 50,
+                margin: "auto"
               }}
             >
               {console.log(this.state.tweets, "77")}

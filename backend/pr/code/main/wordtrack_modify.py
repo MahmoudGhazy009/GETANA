@@ -29,7 +29,7 @@ api = tweepy.API(auth)
 
 table = str.maketrans({key: None for key in string.punctuation})
 
-
+path = 'K:\final pro\GETANA\backend\pr'
 country_map = pd.read_csv(r'K:\final pro\GETANA\backend\pr\datasets\worldmap\worldmap.csv')
 country_map['country'] = country_map['country'].str.lower()
 country_map['code3'] = country_map['code3'].str.lower()
@@ -114,7 +114,7 @@ class Wordtrack:
                 ty ='tweet'
             return ty
         
-        for i,tweet in enumerate(self.tweets):
+        for tweet in self.tweets:
 
             retweet_count = tweet.retweet_count
             
@@ -153,8 +153,8 @@ class Wordtrack:
                                           ,'coordinates':coord
                                           ,'population':1}
                
-            
-            sentiment = model.predict(tweet.full_text,'en')
+            lang = tweet.lang
+            sentiment = model.predict(tweet.full_text,lang)
             
             timeline_analysis['timeline'].append({"name":tweet.user.name
                         ,"user_url" : 'https://twitter.com/{}'.format(tweet.user.screen_name) 
@@ -203,8 +203,6 @@ class Wordtrack:
         
         return timeline_analysis
     
-
-
 
 # =============================================================================
 #     

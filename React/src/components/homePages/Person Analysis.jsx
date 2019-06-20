@@ -2,6 +2,8 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./component/form";
 import searchLogo from "./images/searchLogo.png";
+import logo2 from "./images/watchman.png";
+
 import UserBio from "./component/userBio";
 import ProgressBars from "./../charts/progressBar";
 import ReactLoading from "react-loading";
@@ -61,7 +63,7 @@ class PersonAnalysis extends Form {
           }}
         >
           <img
-            src={searchLogo}
+            src={logo2}
             alt="searchLogo"
             style={{ paddingTop: 80, paddingBottom: 10 }}
           />
@@ -83,7 +85,7 @@ class PersonAnalysis extends Form {
           (this.state.clicked && (
             <div
               style={{
-                marginLeft: 630
+                margin: "auto"
               }}
             >
               <ReactLoading
@@ -146,7 +148,8 @@ class PersonAnalysis extends Form {
                 width: 500,
                 height: 1000,
                 marginLeft: 420,
-                marginTop: 0
+                marginTop: 0,
+                margin: "auto"
               }}
             >
               <Lines
@@ -177,7 +180,8 @@ class PersonAnalysis extends Form {
                 width: 500,
                 height: 400,
                 marginLeft: 420,
-                marginTop: 0
+                marginTop: 0,
+                margin: "auto"
               }}
             >
               <Piee data={this.state.tweets.analysis.freq_tweet_content} />
