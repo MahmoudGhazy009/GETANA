@@ -2,18 +2,14 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./form";
 import Tweets from "./tweets";
-import UserBio from "./userBio";
 import searchLogo from "../images/searchLogo.png";
 import { sendTweet } from "./../../../servics/tweetService";
 import AnalysisIcon from "./wordAnalysis";
 import WordCloud from "./wordCloud";
 import Doughnutt from "../../Graphs/Doughnut";
 import ReactLoading from "react-loading";
-import ClipLoader from "react-spinners/ClipLoader";
-import RegularIcon from "./regularIcon";
 import BasicMap from "./../../Graphs/map";
 import Lines from "./../../Graphs/line";
-import SelectTweet from "./selectTweet";
 
 class TweetsRender extends Form {
   state = {
@@ -48,7 +44,7 @@ class TweetsRender extends Form {
     // const {data: tweets}=await getTweets();
 
     this.setState({ tweets });
-    // console.log("here what back",tweets);
+    console.log("here what back", tweets);
   };
 
   render() {

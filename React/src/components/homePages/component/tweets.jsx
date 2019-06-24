@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Like from "./tweetsIcon/like";
 import Paginations from "./paginates";
 import paginate from "./paginate";
-import RegularIcon from "./regularIcon";
 import SelectTweet from "./selectTweet";
 
 class Tweets extends Component {
@@ -16,9 +15,9 @@ class Tweets extends Component {
   };
   getPagedData = () => {
     const { pageSize, currentPage, tweet } = this.state;
-    const movies = paginate(tweet, currentPage, pageSize);
+    const data = paginate(tweet, currentPage, pageSize);
 
-    return { movies };
+    return { data };
   };
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -34,8 +33,7 @@ class Tweets extends Component {
   };
 
   render() {
-    const { movies: tweet } = this.getPagedData();
-    let classes = "";
+    const { data: tweet } = this.getPagedData();
     console.log(tweet, "hioioi");
     return (
       <div>

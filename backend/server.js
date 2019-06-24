@@ -1,10 +1,6 @@
 const express = require("express");
 const utf8 = require("utf8");
 
-const jwt = require("express-jwt");
-const users = require("./users");
-const auth = require("./auth");
-
 //--------for connect with python file-------//
 let { PythonShell } = require("python-shell");
 let options = {
@@ -15,17 +11,6 @@ let options = {
 };
 
 //=======================//
-/*
-const optionss = {
-  useMongoClient: true,
-  autoIndex: false, // Don't build indexes
-  reconnectTries: 100, // Never stop trying to reconnect
-  reconnectInterval: 500, // Reconnect every 500ms
-  poolSize: 10, // Maintain up to 10 socket connections
-  // If not connected, return errors immediately rather than waiting for reconnect
-  bufferMaxEntries: 0,
-  useNewUrlParser: true
-};*/
 const mongoose = require("mongoose");
 /*
 mongoose.connect('mongodb://Mahmoud_ghazy:Aa__01230123@cluster0-32eca.azure.mongodb.net/getana',optionss)
@@ -36,133 +21,36 @@ mongoose
   .then(() => console.log("Connected to Mongodb"))
   .catch(err => console.log("coulding connect", err));
 
-const TweetSchema = new mongoose.Schema({
-  name: String,
-  tweet: String
-});
-//mongoose.model(collection_name,schema) return class
-const Tweet = mongoose.model("tweets", TweetSchema); //
 //==============================//
 
 const app = express();
-app.use(cors());
-app.use(compress());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Exctract User informations from Authorization header
-app.use(
-  jwt({
-    secret: "secret",
-    credentialsRequired: false
-  })
-);
+const impo = require("./dealWithPython");
 
-app.use((req, res, next) => {
-  res.locals.secret = secret;
-  res.locals.dbAdapter = dbAdapter;
-  next();
-});
-
-const root = express.Router();
-root.use(users);
-root.use(auth);
-
-app.use("/", root);
-
-const c = [{ id: 1, search: "l" }];
 let tweets = "";
-//let k={};
 app.post("/api/HashTag", async (req, res) => {
-  const customer = {
-    id: c.length + 1,
-    search: req.body.search
-  };
-  c.push(customer);
-
-  console.log(c[c.length - 1]["search"], "opopo");
+  console.log(req.body.search, "opopo");
   //=====----communicate with python---//
-  const word = c[c.length - 1]["search"];
-
-  tweets = await sendToPython(word, res, tweets);
+  const word = req.body.search;
+  tweets = await impo.dealWithPython("pr/code/main/try.py", word, res);
   await console.log("fffffff", tweets);
   //res.send(c);
 });
 //------------------------------//
-async function sendToPython(word, res, tweets) {
-  let pyshell = new PythonShell("pr/code/main/try.py", options);
-  pyshell.send(encodeURI(word));
-  pyshell.on("message", function(message) {
-    // received a message sent from the Python script (a simple "print" statement)
-    k = JSON.parse(JSON.stringify(message));
-    console.log("ggggggggg", JSON.parse(JSON.stringify(message)));
-  });
-  pyshell.end(async function(err) {
-    if (err) {
-      throw err;
-    }
-    //tweets = await getTweets();
-    res.send(k);
-    //return tweets
-    //console.log('finished',k[0]["name"]);
-  });
-}
 
 //console.log(c);
 
-async function getTweets(res) {
-  return (tweets = await Tweet.find());
-
-  console.log("wwwwwwwwwww", tweets);
-  //res.send(tweets);
-}
-////////////////////////////////////////////////////////////////
-
+let person = "";
 app.post("/api/Person", async (req, res) => {
-  const customer = {
-    id: c.length + 1,
-    search: req.body.search
-  };
-  c.push(customer);
+  const word = req.body.search;
 
-  console.log(c[c.length - 1]["search"], "opopo");
-  //=====----communicate with python---//
-  const word = c[c.length - 1]["search"];
+  person = await impo.dealWithPython("pr/code/main/usertrack.py", word, res);
 
-  tweets = await sendToPython2(word, res, tweets);
-  await console.log("fffffff", tweets);
+  console.log(person);
+
+  await console.log("fffffff", person);
   //res.send(c);
 });
-//------------------------------//
-async function sendToPython2(word, res, tweets) {
-  let pyshell = new PythonShell("pr/code/main/usertrack.py", options);
-  pyshell.send(encodeURI(word));
-  pyshell.on("message", function(message) {
-    // received a message sent from the Python script (a simple "print" statement)
-    k = JSON.parse(JSON.stringify(message));
-    console.log("ggggggggg", JSON.parse(JSON.stringify(message)));
-  });
-  pyshell.end(async function(err) {
-    if (err) {
-      throw err;
-    }
-    //tweets = await getTweets2();
-    res.send(k);
-    //return tweets
-    //console.log('finished',k[0]["name"]);
-  });
-}
-
-//console.log(c);
-
-async function getTweets2(res) {
-  return (tweets = await Tweet.find());
-
-  console.log("wwwwwwwwwww", tweets);
-  //res.send(tweets);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////
-
 const port = 3001;
 app.listen(port, () => console.log(`server started on port ${port}`));
