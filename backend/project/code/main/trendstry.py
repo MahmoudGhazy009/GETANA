@@ -16,17 +16,19 @@ class Explore(Component):
         
     def available(self):
         trends_location = self.api.trends_available()
-        country = [(d['country'], d['woeid']) for d in trends_location if d['parentid']==1]    
+#        country = [(d['country'], d['woeid']) for d in trends_location if d['parentid']==1]
+        country = {d['country']: d['woeid'] for d in trends_location if d['parentid']==1}
         return country
     
     def woeid(self,location):
         """
         convert country to woid 
         """
+#            i = ('Egypt',262718)
         if location =='world':
             place = 1
         else:
-            place= self.country.get(location)
+            place= self.country_woid.get(location)
         return place
         
     
@@ -45,21 +47,19 @@ class Explore(Component):
         while True:
             flag = len(country) -70
             if flag > 0:
-                for i in country[:70]:
-                    trends = self.api.trends_place(id = i[1])[0]
+                for name, woid in list(country.items())[:70]:
+                    trends = self.api.trends_place(id = woid)[0]
                     trends_name = [{'name':trend['name'],'tweet_volume':trend['tweet_volume']}for trend in trends['trends']]
-                    trendsmap.append({'name':i[0],'trends':trends_name})
-                    print('{} trends downloaded'.format(i[0]))
-                country = country[70:]
+                    trendsmap.append({'name':name,'trends':trends_name})
+                country = {d[0]:d[1] for d in list(country.items())[70:]}
                 time.sleep(900)
                 
 #            i = ('Egypt',262718)
             else:
-                for i in country:
-                    trends = self.api.trends_place(id = i[1])[0]
+                for name, woid in list(country.items()):
+                    trends = self.api.trends_place(id = woid)[0]
                     trends_name = [{'name':trend['name'],'tweet_volume':trend['tweet_volume']}for trend in trends['trends']]
-                    trendsmap.append({'name':i[0],'trends':trends_name})
-                    print('{} trends downloaded'.format(i[0]))
+                    trendsmap.append({'name':name,'trends':trends_name})
 
                 break
             
@@ -77,14 +77,13 @@ class Explore(Component):
  
 if __name__=='__main__':
     
-    
     autho = tweepy.OAuthHandler(app[0], app[1])
     autho.set_access_token(app[2], app[3])
     api = tweepy.API(autho)
 
     client = Explore(api)
         
-    cf = int(sys.argv[1]) #{0 : update_all, 1 : get_trends, 2 : get_tweets}
+    cf = 0#int(sys.argv[1]) #{0 : update_all, 1 : get_trends, 2 : get_tweets}
     
     country = client.available()
     
@@ -92,14 +91,14 @@ if __name__=='__main__':
         result = client.update_all(country)
         
     elif(cf==1):
-        country = sys.argv[2] 
+        country = 'Egypt'#sys.argv[2] 
         result = client.get_trends(country)
     
     elif(cf==2):
         query = sys.argv[2]
         result = client.get_tweets(query,10)
     
-    #print(json.dumps({'trends':result}))
+    print(json.dumps({'trends':result}))
     
     
     

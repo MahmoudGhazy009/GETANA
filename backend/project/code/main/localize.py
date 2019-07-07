@@ -37,7 +37,7 @@ def locate(location):
             or(re.match(r'(.*\W|\W*){}\b'.format(row['code3']), location))        
             or(re.match(r'(.*\W|\W*){}\b'.format(row['name']) , location))):
             
-            coord = row['coord']
+            coord = [row['lat'],row['lang']]
             country_name = row['name']
             break
     return country_name, coord
@@ -47,5 +47,16 @@ def locate(location):
 #dt = pd.read_html(r"C:\Users\khalid\Desktop\ISO 3166-1 - Wikipedia.html")
 #dt[1].to_csv(r"E:\project\datasets\worldmap\scrap.csv",index=False)
 #
-#print(locate('Portland'.lower()))
+#print(locate('united states'.lower()))
+#
+#
+#country_map.to_csv("{}/project/datasets/worldmap/map.csv".format(path),index=False)
+    
+#print(locate('united kingdom'))
+
+#country_map['coord'] = country_map['coord'].apply(lambda x: list(map( float, x.strip(r'[|]').split(','))))
+#country_map['lat'] =country_map['coord'].apply(lambda x: x[0])
+#country_map['lang'] =country_map['coord'].apply(lambda x: x[1])
+#d = country_map.drop('coord',axis=1) 
+#d.to_csv("{}/project/datasets/worldmap/map.csv".format(path),index=False)
 

@@ -9,6 +9,8 @@ Created on Fri Dec 14 03:58:46 2018
 from collections import Counter
 import sentimental_pickle as model
 import localize as loc
+from auth import *
+import pandas as pd
 
 class Component:
     
@@ -73,7 +75,7 @@ class Component:
     
     
     def location_distribution(self,tweet):
-        place=None
+        
         if tweet.place is None:
             if tweet.user.location is None:
                 location = None
@@ -87,15 +89,11 @@ class Component:
             l = location
         country_name, coord = loc.locate(location)
         
-        if country_name:
-            place= {'name':country_name
-                                      ,'coordinates':coord
-                                      }
-        return place,l
+        return country_name, coord, l
         
         
     def basicAnalysis(self,tweet):
-        place={}
+        
         retweet_count = tweet.retweet_count
         contentv,photo = self.content(tweet)
         try:
@@ -113,9 +111,9 @@ class Component:
         lang = tweet.lang
 
         hasht = tweet.entities['hashtags']
-        hashtags = [h['text'] for h in hasht ]
+        hashtags = ','.join([h['text'] for h in hasht ])
 
-        place,l = self.location_distribution(tweet)
+        country_name, coord, l = self.location_distribution(tweet)
         sentiment = model.predict(text=text,lang=lang)
             
         tweetBanalysis = {"name":tweet.user.name
@@ -128,17 +126,19 @@ class Component:
                     ,"likes" : tweet.favorite_count
                     ,"retweet_count" : retweet_count
                     ,"application" : tweet.source
-                    ,"created_at" : str(tweet.created_at)
+                    ,"created_at" : tweet.created_at
                     ,"content" : contentv
                     ,"photo" : photo
                     ,"lang" : lang
                     ,"type" : type_
-                    ,"location" : place
+                    ,"countryname" : country_name
+                    ,"coords": coord
                     ,"location_without" : l
                     ,"hashtags" : hashtags
                     ,"sentiment" : int(sentiment)
                     }
-        return tweetBanalysis
+        df = pd.DataFrame.from_dict(tweetBanalysis)
+        return tweetBanalysis,df
                 
         
     def analysis(self,tweets):
@@ -168,6 +168,7 @@ class Component:
             if timelineBanalysis['location']:
                 country_name = timelineBanalysis['location']['name']
                 if country_name in place:    
+                    place[country_name] = timelineBanalysis['location']
                     place[country_name]['population'] += 1
                     
                 else:
@@ -213,6 +214,15 @@ class Component:
 
 
 
+
+    
+autho = tweepy.OAuthHandler(user[0], user[1])
+autho.set_access_token(user[2], user[3])
+api = tweepy.API(autho)
+co = Component(api)
+
+tweets = co.search(query='love',count=10)
+an,df = co.basicAnalysis(tweets[0]) 
     
 """Need to call         self.tweets = self.search(tweets_count/100) """
 

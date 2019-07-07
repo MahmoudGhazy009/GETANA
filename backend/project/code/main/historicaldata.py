@@ -68,7 +68,5 @@ if __name__ == '__main__':
             tweets = sl.tweet_download(tweets_id,user_com)
             analysis = sl.analyze(tweets,user_com)
             ''' send analysis to DB or NJ'''
-        
    
-    
     
