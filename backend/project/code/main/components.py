@@ -6,6 +6,10 @@ Created on Fri Dec 14 03:58:46 2018
 
 #from modules import *
 
+from collections import Counter
+import sentimental_pickle as model
+import localize as loc
+
 class Component:
     
     def __init__(self,api):

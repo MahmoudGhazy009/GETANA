@@ -1,40 +1,13 @@
-import os
-import sys, codecs, urllib.parse
+import urllib.parse
 
 import requests as req
 from pyquery import PyQuery as pq
 
-from .models import Tweet, TweetCriteria
+from .models import TweetCriteria
+import statuslookup as sl
 
-class Exporter(object):
 
-    def __init__(self, criteria = None, filename = 'tweets_gathered.csv',new=1):
-        file_extension = filename.split('.')[-1]
-
-        if not file_extension == 'csv':
-            self.filename = 'tweets_gathered.csv'
-        else:
-            self.filename = filename
-        
-        self.output = codecs.open(self.filename, 'a+', 'utf-8')
-        
-        if new:
-            if not criteria:
-                criteria ='tweet_id'    
-            criteria_string = criteria
-            self.output.write(criteria_string)
-        
-
-    def output_to_file(self, tweets):
-        for tweet in tweets:
-            format = '\n%s'
-            self.output.write((format %(tweet.id)))
-        self.output.flush();
-        print ('%d tweets added to file' % len(tweets))
-
-    def close(self):
-        self.output.close()
-
+    
 class Scraper(object):
 
     def __init__(self):
@@ -58,13 +31,14 @@ class Scraper(object):
         return url, headers
 
     @staticmethod
-    def get_tweets(tweet_criteria, buffer = None, buffer_length = 100,refresh_cursor = ''):
+    def get_tweets(tweet_criteria,refresh_cursor = '',thread_length=100):
         active = True
         results = []
-        results_to_append = []
-
+        results_to_thread= []
+        status = 200
+        
         if tweet_criteria.max_tweets <= 0:
-            return '',200,0
+            return '',status,results
         
         while active:
             json_,status = Scraper.get_json_response(tweet_criteria, refresh_cursor)
@@ -72,7 +46,7 @@ class Scraper(object):
             try:
                 if not json_ or len(json_['items_html'].strip()) == 0:
                     if status==405:
-                        print('error!!')
+                        print('Twitter weird response.')
                     else:
                         print('empty json')
                     break
@@ -88,19 +62,16 @@ class Scraper(object):
                 break
 
             for i,tweetHTML in enumerate(tweets):
-
                 _ = pq(tweetHTML)
-
                 tweet_id = _.attr('data-tweet-id')
-
-                tweet = Tweet()
-                tweet.id = tweet_id
-                results.append(tweet)
-                results_to_append.append(tweet)
+                results.append(tweet_id)
+                results_to_thread.append(tweet_id)
                 
-                if buffer and len(results_to_append) >= buffer_length:
-                    buffer(results_to_append)
-                    results_to_append = []
+                if len(results_to_thread) >= thread_length:
+                    ''' call thread to statuslook '''
+#                    sl.tweet_download(results_to_thread,user_com)
+                    results_to_thread= []
+                    
 
                 if len(results) >= tweet_criteria.max_tweets:
                     active = False
@@ -108,10 +79,11 @@ class Scraper(object):
 
             print('remain: {}'.format(tweet_criteria.max_tweets - len(results)))
             print('-'*5)
-        if buffer and len(results_to_append) > 0:
-            buffer(results_to_append)
+        if len(results_to_thread) > 0:
+            # call thread to statuslook
+            pass
         
-        return refresh_cursor,status,len(results)
+        return refresh_cursor,status,results
 
     @staticmethod
     def get_json_response(tweet_criteria, refresh_cursor):
@@ -147,10 +119,6 @@ class Scraper(object):
             #time.sleep(60)
         except:
             status = 405
-#            text = 'Twitter weird response. Try to see on browser:https://twitter.com/search?q=%s&src=typd'
-#            print(text % urllib.parse.quote(url))
-#            print('Unexpected error:', sys.exc_info()[0])
-#            sys.exit()
             return {},status
 
         return r.json(),r.status_code 
