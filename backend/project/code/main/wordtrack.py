@@ -29,6 +29,7 @@ if __name__=='__main__':
     lines = sys.argv[0]
     lines = urldecode(lines)
     lines = lines.encode('utf-8').decode()
+    
     tweets = co.search(query=lines,count=10)
     an= co.analysis(tweets) 
     

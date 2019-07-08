@@ -72,26 +72,40 @@ class Component:
         return ty
     
     
-    def location_distribution(self,tweet):
+    def location_distribution(self,tweet=None,user=None):
         place=None
-        if tweet.place is None:
+        if tweet:
+            tweet_place = tweet.place
+        else:
+            tweet_place = None
+            
+        if tweet_place is None and user is None:
             if tweet.user.location is None:
                 location = None
                 l = None
-            else:                    
+            else:
                 l = tweet.user.location
                 location = l.lower()
-                
-        else:
+        
+        elif tweet_place and user is None:
             location = tweet.place.country
             l = location
+        
+        elif tweet_place is None and user:
+            if user.location is None:
+                location = None
+                l = None                
+            else:
+                l = user.location
+                location = l.lower()
+                
         country_name, coord = loc.locate(location)
         
         if country_name:
             place= {'name':country_name
-                                      ,'coordinates':coord
-                                      }
+                    ,'coordinates':coord}
         return place,l
+
         
         
     def basicAnalysis(self,tweet):
@@ -114,8 +128,12 @@ class Component:
 
         hasht = tweet.entities['hashtags']
         hashtags = [h['text'] for h in hasht ]
-
-        place,l = self.location_distribution(tweet)
+        
+        user_mention = tweet.entities['user_mentions']
+        user_mentions = [m['name'] for m in user_mention]
+        
+        place,l = self.location_distribution(tweet = tweet)
+        
         sentiment = model.predict(text=text,lang=lang)
             
         tweetBanalysis = {"name":tweet.user.name
@@ -136,11 +154,14 @@ class Component:
                     ,"location" : place
                     ,"location_without" : l
                     ,"hashtags" : hashtags
+                    ,"user_mentions" : user_mentions
                     ,"sentiment" : int(sentiment)
                     }
         return tweetBanalysis
                 
-        
+    
+
+    
     def analysis(self,tweets):
         """
         analysis: create dataframe for tweets
@@ -186,6 +207,7 @@ class Component:
             
             for hasht in timelineBanalysis["hashtags"]:
                 hash_num[hasht] += 1
+            
             
             hours[tweet.created_at.strftime("%I%p")] += 1
             day_of_week[tweet.created_at.strftime("%a")] += 1
