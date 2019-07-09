@@ -9,11 +9,22 @@ function dwp(pyfile, input) {
     return new Promise((resolve, error) => {
         console.log("in promise", path.join(__dirname, pyfile))
         pythonProcess.stdout.on("data", data => {
-            theStringyData += data;
-            theStringyData = theStringyData.toString()
+            theStringyData += data.toString()
         });
         pythonProcess.stdout.on("end", () => {
+            console.log(theStringyData)
+
             try {
+                theStringyData = theStringyData.replace(/\\n/g, "\\n")
+                    .replace(/\\'/g, "\\'")
+                    .replace(/\\"/g, '\\"')
+                    .replace(/\\&/g, "\\&")
+                    .replace(/\\r/g, "\\r")
+                    .replace(/\\t/g, "\\t")
+                    .replace(/\\b/g, "\\b")
+                    .replace(/\\f/g, "\\f");
+                // remove non-printable and other non-valid JSON chars
+                theStringyData = theStringyData.replace(/[\u0000-\u0019]+/g, "");
                 returnedData = JSON.parse(theStringyData);
                 resolve(returnedData);
             } catch (e) {
