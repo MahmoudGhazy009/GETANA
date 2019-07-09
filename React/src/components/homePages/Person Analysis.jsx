@@ -46,7 +46,7 @@ class PersonAnalysis extends Form {
     //this.setState({ clicked });
 
     const { data: tweets } = await sendTweet(
-      "/twitterusers" + `${this.state.data.search}`
+      "/twitterusers/" + `${this.state.data.search}`
     );
     // const {data: tweets}=await getTweets();
 
