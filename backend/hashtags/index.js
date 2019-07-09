@@ -10,7 +10,7 @@ const {
 router.get('/:id', async (req, res) => {
     try {
         //talk to py and get new data
-        //console.log("here in get and id is", req.params.id)
+        console.log("here in get and id is", req.params.id)
         const data = await dwp("project\\code\\main\\wordtrack.py", req.params.id);
         console.log("returned data", data)
         if (!data) return res.status(404).send("not found user with this id");

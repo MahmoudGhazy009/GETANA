@@ -40,7 +40,10 @@ class TweetsRender extends Form {
     this.setState(this.state.data);
     this.setState({ clicked });
 
-    const { data: tweets } = await sendTweet("/HashTag", this.state.data);
+    const { data: tweets } = await sendTweet(
+      `/hashtags/${this.state.data}`,
+      this.state.data
+    );
     // const {data: tweets}=await getTweets();
 
     this.setState({ tweets });
