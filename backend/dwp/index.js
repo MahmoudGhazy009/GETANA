@@ -9,7 +9,8 @@ function dwp(pyfile, input) {
     return new Promise((resolve, error) => {
         console.log("in promise", path.join(__dirname, pyfile))
         pythonProcess.stdout.on("data", data => {
-            theStringyData += data.toString();
+            theStringyData += data;
+            theStringyData = theStringyData.toString()
         });
         pythonProcess.stdout.on("end", () => {
             try {

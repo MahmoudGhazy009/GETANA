@@ -10,6 +10,7 @@ import re
 import pickle
 import string
 from nltk.stem import PorterStemmer
+import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.isri import ISRIStemmer
 from nltk.tokenize import  word_tokenize
@@ -93,24 +94,3 @@ def noise_reduce(data,lang='en'):
     return data
 
 #print(noise_reduce("😍 she ̲likes‒–― ‐—━—-▬ me and :( o_O I've love\n\r\t\u200b\x96 her driving",'en'))
-
-# ===================== functions replaced by mapping =================================
-  
-def stemSentence(sentence):
-    token_words=word_tokenize(sentence)
-    stem_sentence=[]
-         
-    for word in token_words:
-  #       remove un used emoji
-        word = re.sub(r'\W+','',word)
-  #       stem words
-        stem_sentence.append(porter.stem(word))
-          
-    return " ".join(stem_sentence)
- 
-def emoji_sub(data):     
-    for i in emoji:
-        index = data.find(i)
-        if index != -1:
-            data = data.replace(data[index],' {} '.format(emoji[i]))
-    return data

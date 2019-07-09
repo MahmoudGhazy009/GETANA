@@ -3,7 +3,7 @@ import Joi from "joi-browser";
 import Form from "./component/form";
 import searchLogo from "./images/searchLogo.png";
 import logo2 from "./images/watchman.png";
-import { Button } from 'react-bootstrap';
+import { Button } from "react-bootstrap";
 import UserBio from "./component/userBio";
 import ProgressBars from "./../charts/progressBar";
 import ReactLoading from "react-loading";
@@ -19,7 +19,7 @@ import AnalysisIcon from "./component/wordAnalysis";
 import Lines from "../Graphs/line";
 import Tweets from "./component/tweets";
 import Piee from "./../Graphs/pie";
-import Bounce from 'react-reveal/Bounce';
+import Bounce from "react-reveal/Bounce";
 class PersonAnalysis extends Form {
   state = {
     searchQuery: "",
@@ -45,7 +45,9 @@ class PersonAnalysis extends Form {
     this.setState(this.state.data);
     //this.setState({ clicked });
 
-    const { data: tweets } = await sendTweet("/Person", this.state.data);
+    const { data: tweets } = await sendTweet(
+      "/twitterusers" + `${this.state.data.search}`
+    );
     // const {data: tweets}=await getTweets();
 
     this.setState({ tweets });
@@ -71,13 +73,10 @@ class PersonAnalysis extends Form {
           <div style={{ marginBottom: 0 }}>
             <form onSubmit={this.handleSubmit}>
               {this.renderInput("search")}
-              <div
-               style={{ marginLeft:"13%"}}
-              >
-                <Bounce duration={1000} forever  cascade>
-                {this.renderButton("Search")}
+              <div style={{ marginLeft: "13%" }}>
+                <Bounce duration={1000} forever cascade>
+                  {this.renderButton("Search")}
                 </Bounce>
-             
               </div>
             </form>
           </div>
@@ -87,7 +86,7 @@ class PersonAnalysis extends Form {
           (this.state.clicked && (
             <div
               style={{
-                marginLeft:"45%"
+                marginLeft: "45%"
               }}
             >
               <ReactLoading
@@ -95,7 +94,6 @@ class PersonAnalysis extends Form {
                 color="#2e98cc"
                 height={100}
                 width={120}
-                
               />
               {/*
               <ClipLoader
@@ -167,55 +165,108 @@ class PersonAnalysis extends Form {
                 name={"ACTIVE HOURS"}
               />
               {console.log(this.state.tweets, "77")}
-              
-              
             </div>
             {console.log(
               this.state.tweets.timeline,
               "this.state.tweets.timeline"
             )}
-            <Bounce duration={1000}  cascade><div style={{borderTop: "1px solid #ddd"}}><Button  style={{marginLeft:"45%"}} variant="warning" size="sm"><Bounce duration={1000} forever  cascade><h5 style={{fontFamily:"Nanum Pen Script, cursive"}}>Word Cloud</h5></Bounce></Button> </div></Bounce>
+            <Bounce duration={1000} cascade>
+              <div style={{ borderTop: "1px solid #ddd" }}>
+                <Button
+                  style={{ marginLeft: "45%" }}
+                  variant="warning"
+                  size="sm"
+                >
+                  <Bounce duration={1000} forever cascade>
+                    <h5 style={{ fontFamily: "Nanum Pen Script, cursive" }}>
+                      Word Cloud
+                    </h5>
+                  </Bounce>
+                </Button>{" "}
+              </div>
+            </Bounce>
             <WordCloud words={this.state.tweets.analysis.freq_tweet_hashtag} />
-            <div style={{height:"40px"}}></div>
+            <div style={{ height: "40px" }} />
 
-            <Bounce duration={1000}  cascade><div style={{borderTop: "1px solid #ddd"}}><Button  style={{marginLeft:"45%"}} variant="warning" size="sm"><Bounce duration={1000} forever  cascade><h5 style={{fontFamily:"Nanum Pen Script, cursive"}}>Engagment</h5></Bounce></Button> </div></Bounce>
+            <Bounce duration={1000} cascade>
+              <div style={{ borderTop: "1px solid #ddd" }}>
+                <Button
+                  style={{ marginLeft: "45%" }}
+                  variant="warning"
+                  size="sm"
+                >
+                  <Bounce duration={1000} forever cascade>
+                    <h5 style={{ fontFamily: "Nanum Pen Script, cursive" }}>
+                      Engagment
+                    </h5>
+                  </Bounce>
+                </Button>{" "}
+              </div>
+            </Bounce>
             <Doughnutt data={this.state.tweets.analysis.freq_tweet_type} />
-            <div className="row" style={{fontFamily:"Nanum Pen Script, cursive",width:"50%",marginLeft:"37%"}}>
+            <div
+              className="row"
+              style={{
+                fontFamily: "Nanum Pen Script, cursive",
+                width: "50%",
+                marginLeft: "37%"
+              }}
+            >
+              <div className="col-md-2">
+                <h3 style={{ color: "violet" }}>
+                  {this.state.tweets.analysis.freq_tweet_type.tweet}
+                </h3>
+                <span>tweet</span>
+              </div>
 
-        <div className="col-md-2">  
-        <h3 style={{color:"violet"}}>{this.state.tweets.analysis.freq_tweet_type.tweet}</h3>
-        <span >tweet</span>
-        </div>
+              <div className="col-md-2">
+                <h3 style={{ color: "red" }}>
+                  {this.state.tweets.analysis.freq_tweet_type.retweet}
+                </h3>
+                <span>retweet</span>
+              </div>
 
-        <div className="col-md-2">
-        <h3 style={{color:"red"}}>{this.state.tweets.analysis.freq_tweet_type.retweet}</h3>
-        <span>retweet</span>
-        </div>
+              <div className="col-md-2">
+                <h3 style={{ color: "purple" }}>
+                  {this.state.tweets.analysis.freq_tweet_type.reply}
+                </h3>
+                <span>reply</span>
+              </div>
 
-        <div className="col-md-2">  
-        <h3 style={{color:"purple"}}>{this.state.tweets.analysis.freq_tweet_type.reply}</h3>
-        <span>reply</span>
-        </div>
+              <div className="col-md-2">
+                <h3 style={{ color: "blue" }}>
+                  {this.state.tweets.analysis.freq_tweet_type.quote}
+                </h3>
+                <span>quote</span>
+              </div>
+            </div>
 
-        <div className="col-md-2">
-        <h3 style={{color:"blue"}}>{this.state.tweets.analysis.freq_tweet_type.quote}</h3>
-        <span>quote</span>
-        </div>
+            <div style={{ height: "60px" }} />
 
-      </div>
-
-      <div style={{height:"60px"}}></div>  
-            
-            <Bounce duration={1000}  cascade><div style={{borderTop: "1px solid #ddd"}}><Button  style={{marginLeft:"43%"}} variant="warning" size="sm"><Bounce duration={1000} forever  cascade><h5 style={{fontFamily:"Nanum Pen Script, cursive"}}>Frequent Content</h5></Bounce></Button> </div></Bounce>
+            <Bounce duration={1000} cascade>
+              <div style={{ borderTop: "1px solid #ddd" }}>
+                <Button
+                  style={{ marginLeft: "43%" }}
+                  variant="warning"
+                  size="sm"
+                >
+                  <Bounce duration={1000} forever cascade>
+                    <h5 style={{ fontFamily: "Nanum Pen Script, cursive" }}>
+                      Frequent Content
+                    </h5>
+                  </Bounce>
+                </Button>{" "}
+              </div>
+            </Bounce>
             <div
               style={{
                 width: 550,
-                marginLeft:"33%"
+                marginLeft: "33%"
               }}
             >
               <Piee data={this.state.tweets.analysis.freq_tweet_content} />
             </div>
-            <div style={{height:"60px"}}></div>
+            <div style={{ height: "60px" }} />
             <ProgressBars
               data={this.state.tweets.analysis.most_quoted_user}
               name="Most Quoted User"
@@ -230,16 +281,43 @@ class PersonAnalysis extends Form {
               data={this.state.tweets.analysis.most_retweeted_user}
               name="Most Retweeted User"
             />
-            <div style={{height:"60px"}}></div>
-            <Bounce duration={1000}  cascade><div style={{borderTop: "1px solid #ddd"}}><Button  style={{marginLeft:"45%"}} variant="warning" size="sm"><Bounce duration={1000} forever  cascade><h5 style={{fontFamily:"Nanum Pen Script, cursive"}}>Frequent App</h5></Bounce></Button> </div></Bounce>
-              <div style={{height:"20px" }}></div>
-              <div style={{marginLeft:"13%", marginBottom:20}}>
-            <AnalysisIcon data={this.state.tweets.analysis.freq_tweet_app} />
+            <div style={{ height: "60px" }} />
+            <Bounce duration={1000} cascade>
+              <div style={{ borderTop: "1px solid #ddd" }}>
+                <Button
+                  style={{ marginLeft: "45%" }}
+                  variant="warning"
+                  size="sm"
+                >
+                  <Bounce duration={1000} forever cascade>
+                    <h5 style={{ fontFamily: "Nanum Pen Script, cursive" }}>
+                      Frequent App
+                    </h5>
+                  </Bounce>
+                </Button>{" "}
+              </div>
+            </Bounce>
+            <div style={{ height: "20px" }} />
+            <div style={{ marginLeft: "13%", marginBottom: 20 }}>
+              <AnalysisIcon data={this.state.tweets.analysis.freq_tweet_app} />
             </div>
-            <Bounce duration={1000}  cascade><div style={{borderTop: "1px solid #ddd"}}><Button  style={{marginLeft:"47.5%"}} variant="warning" size="sm"><Bounce duration={1000} forever  cascade><h5 style={{fontFamily:"Nanum Pen Script, cursive"}}>Tweets</h5></Bounce></Button> </div></Bounce>
-              <div style={{height:"60px"}}></div>
+            <Bounce duration={1000} cascade>
+              <div style={{ borderTop: "1px solid #ddd" }}>
+                <Button
+                  style={{ marginLeft: "47.5%" }}
+                  variant="warning"
+                  size="sm"
+                >
+                  <Bounce duration={1000} forever cascade>
+                    <h5 style={{ fontFamily: "Nanum Pen Script, cursive" }}>
+                      Tweets
+                    </h5>
+                  </Bounce>
+                </Button>{" "}
+              </div>
+            </Bounce>
+            <div style={{ height: "60px" }} />
             <Tweets tweet={this.state.tweets.timeline} />
-            
           </div>
         )}
         {/*this.state.tweets.timeline.length >= 1 && (

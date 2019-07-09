@@ -14,11 +14,9 @@ from collections import Counter
 import json
 
 
-path='E:'
+path = 'E:\\jan\\GETANA\\backend\\dwp'
 
 #from auth import *
-
-
 
 
 #import math
@@ -29,5 +27,3 @@ path='E:'
 #from componenttry import *
 #import sentimental_pickle  as model
 #import localize as loc
-
-

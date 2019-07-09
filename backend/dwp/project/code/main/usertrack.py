@@ -3,6 +3,8 @@
 Created on Thu Dec 13 14:42:03 2018
 @author: khalid
 """
+import warnings
+warnings.filterwarnings("ignore")
 
 from modules import *
 import tweepy
@@ -91,7 +93,6 @@ class Usertrack(Component):
                 else:
                     fol_location[country_name] = place
                     fol_location[country_name]['population'] = 1
-
         return fol_location
     
     
@@ -220,7 +221,8 @@ class Usertrack(Component):
 
 if __name__ =='__main__':
     
-    user_name = sys.argv[0]
+    #user_name =  sys.stdin.readlines()[0].replace('"',"").replace("\n","")
+    user_name =  sys.argv[1]
     
     autho = tweepy.OAuthHandler(user[0], user[1])
     autho.set_access_token(user[2], user[3])
@@ -233,7 +235,7 @@ if __name__ =='__main__':
         tweets = user.user_timeline()
         user_analysis = user.analysis(tweets)
         
-        user_analysis['profile_card'] = user_card
+        user_analysis['cards'] = user_card
         
         likes = user.user_likes()
         likes_timeline = list(map(user.basicAnalysis,likes))
@@ -241,12 +243,18 @@ if __name__ =='__main__':
         
         following = user.following()
         following_place = user.fol_locate(following)
-        
+        follow_list=[]
+        for value in following_place.values():
+            value['type']='following'
+            follow_list.append(value)
+                
         follower = user.follower()
         follower_place = user.fol_locate(follower)
-        
-        user_analysis['map'] = {'follower':list(follower_place.values())
-                                ,'following':list(following_place.values())}
+        for value in follower_place.values():
+            value['type']='follower'
+            follow_list.append(value)
+
+        user_analysis['map'] = follow_list# list(following_place.values())}
         
         print(json.dumps(user_analysis))
         

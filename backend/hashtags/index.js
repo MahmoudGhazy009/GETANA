@@ -8,6 +8,7 @@ const {
 } = require('./hashtag.model')
 
 router.get('/:id', async (req, res) => {
+    console.log("here in get and id is", req.params.id)
     try {
         //talk to py and get new data
         console.log("here in get and id is", req.params.id)

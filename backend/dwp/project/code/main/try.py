@@ -6,7 +6,7 @@ Created on Fri Dec 14 11:10:29 2018
 """
 
 
-from wordtrack_modify import Wordtrack
+from wordtrack_modify import wordtrack
 import json
 import sys
 # import sentimental_pickle as sent
