@@ -38,7 +38,7 @@ class App extends Component {
             <SimpleMap />
           </div>
         </div>*/}
-        <Footer />
+        
       </React.Fragment>
     );
   }

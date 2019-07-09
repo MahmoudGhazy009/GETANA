@@ -5,9 +5,6 @@ const Input = ({ name, label, placeholder = "", error, ...rest }) => {
   return (
     <div className="input-group mb-3" style={{ width: "50%", margin: "auto" }}>
       <div className="input-group-prepend">
-        <span className="input-group-text" id="basic-addon">
-          <i className="fa fa-user prefix" />
-        </span>
       </div>
       <input
         {...rest}

@@ -8,6 +8,7 @@ class Lines extends Component {
       datasets: [
         {
           label: "My First dataset",
+          fontFamily:"Nanum Pen Script, cursive",
           backgroundColor: "rgba(179,181,198,0.2)",
           borderColor: "rgba(179,181,198,1)",
           pointBackgroundColor: "rgba(179,181,198,1)",

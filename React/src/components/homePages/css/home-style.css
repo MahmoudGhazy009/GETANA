@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Roboto");
 body {
   font-family: Roboto, sans-serif;
-  padding-top: 90px;
-
   margin: 0px;
   padding: 0px;
   background-color: #ffffff;
@@ -307,22 +305,32 @@ footer {
   padding-left: 200px;
   height: 500px;
   background: transparent;
-  background: url("../images/home1.jpg");
+  background: url("../images/dustin-lee-jLwVAUtLOAQ-unsplash.jpg");
   background-attachment: fixed;
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
 .cover {
-  padding: 170px;
-  padding-left: 200px;
-  height: 800px;
+  
+  height: 650px;
   background: transparent;
-  background: url("../images/home2.jpg");
+  background: url("../images/austin-distel-Imc-IoZDMXc-unsplash.jpg");
   background-attachment: fixed;
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+}
+.featureIMG {
+  
+  height: auto;
+  background: transparent;
+  background: url("../images/austin-distel-Imc-IoZDMXc-unsplash.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
 }
 .borders {
   border: #bf360c 2px solid;
@@ -343,7 +351,7 @@ footer {
   height: 100%;
   width: 100%;
   display: table;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.45);
   color: #fff;
 }
 
@@ -454,7 +462,7 @@ footer {
 }
 
 nav {
-  background-color: #272727;
+  background-color:rgba(39,39,39,1);
 }
 .container .spantitle {
   text-align: center;
@@ -490,10 +498,17 @@ nav {
   padding-bottom: 30px;
   letter-spacing: 0.025rem;
 }
+
 .gg {
   width: 50px;
   height: 3px;
   background-color: #f9461d;
+  margin: auto;
+}
+.nn {
+  width: 50px;
+  height: 3px;
+  background-color:#17a2b8;
   margin: auto;
 }
 
@@ -504,8 +519,20 @@ nav {
   font-size: 19px;
 }
 .funfacts {
-  background-image: url(../images/bg-fun-facts.jpg);
-  background-size: cover;
+  background: transparent;
+  background: url("../images/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.featureIMG{
+  background: transparent;
+  background: url("../images/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 .black {
   padding-top: 90px;
@@ -513,7 +540,7 @@ nav {
   background-color: rgba(0, 0, 0, 0.6);
 }
 .feature i {
-  color: #f9461d;
+  color: #17a2b8;
   font-size: 40px;
   padding: 6px;
   margin: 10px 50px;
@@ -555,11 +582,12 @@ nav {
   background-color: #fff;
 }
 .x {
-  padding-top: 90px;
-  padding-bottom: 80px;
+  padding-bottom: 30px;
 }
+
 .why .feature {
-  margin: 20px;
+  margin: 30px;
+  
 }
 .why .feature h3 {
   color: #000;
@@ -570,21 +598,21 @@ nav {
 }
 .rr {
   background-color: #fff;
-  height: 500px;
+  height: 400px;
 }
 .ww {
   background-color: red;
   height: 400px;
 }
 .blockicon i {
-  border: 1px solid red;
+  border: 1px solid #00c3da;
   border-radius: 50%;
   padding: 20px;
   transition: all 0.5s;
 }
 .blockicon:hover i {
   color: #fff;
-  background-color: #f9461d;
+  background-color: #17a2b8;
 }
 .bb {
   padding-bottom: 30px;
@@ -600,11 +628,14 @@ nav {
   width: 80%;
 }
 .featurez img {
+  height: 300px;
   transition: 1s all;
+  
 }
 .featurez:hover img {
   transform: scale(1.1);
   opacity: 1;
+  z-index: -6890687;
 }
 .d {
   background-color: rgba(42, 63, 85, 0.7);
@@ -615,7 +646,7 @@ nav {
   left: 0;
   height: 100%;
   width: 100%;
-  z-index: 4378326194;
+  z-index: 43;
 
   transition: all 1s;
   opacity: 0;

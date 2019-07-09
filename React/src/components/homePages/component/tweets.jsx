@@ -2,22 +2,23 @@ import React, { Component } from "react";
 import Like from "./tweetsIcon/like";
 import Paginations from "./paginates";
 import paginate from "./paginate";
+import RegularIcon from "./regularIcon";
 import SelectTweet from "./selectTweet";
 
 class Tweets extends Component {
   state = {
     pageSize: 10,
     currentPage: 1,
-    types: ["All", "POS", "NEG"],
+    types: ["All" , "POS", "NEG"],
     tweet: this.props.tweet,
     root: this.props.tweet,
     selectedType: null
   };
   getPagedData = () => {
     const { pageSize, currentPage, tweet } = this.state;
-    const data = paginate(tweet, currentPage, pageSize);
+    const movies = paginate(tweet, currentPage, pageSize);
 
-    return { data };
+    return { movies };
   };
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -33,7 +34,8 @@ class Tweets extends Component {
   };
 
   render() {
-    const { data: tweet } = this.getPagedData();
+    const { movies: tweet } = this.getPagedData();
+    let classes = "";
     console.log(tweet, "hioioi");
     return (
       <div>
@@ -42,6 +44,7 @@ class Tweets extends Component {
           selectedItem={this.state.selectedType}
           onItemSelect={this.handleGenreSelect}
         />
+       
         {tweet.map((item, index) => (
           <div
             key={index}
@@ -75,6 +78,7 @@ class Tweets extends Component {
                     target="_blank"
                   >
                     {item.name}
+                    <h6 style={{color:'gray'}}>@{item["handler"]}</h6>
                   </a>
                 </h4>
               </div>
@@ -117,7 +121,7 @@ class Tweets extends Component {
             <br />
           </div>
         ))}
-        <div style={{ marginLeft: 580 }}>
+        <div >
           <Paginations
             itemsCount={this.state.tweet.length}
             pageSize={this.state.pageSize}
