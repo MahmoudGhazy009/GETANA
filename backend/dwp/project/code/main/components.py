@@ -7,7 +7,7 @@ Created on Fri Dec 14 03:58:46 2018
 #from modules import *
 
 from collections import Counter
-import sentimental_pickle as model
+# import sentimental_pickle as model
 import localize as loc
 
 class Component:
@@ -30,7 +30,7 @@ class Component:
         tweets=[]
         while iterr_num:
             try:
-                tweets.extend(self.api.search(lang="en",q=query,count = count, result_type=result,include_rts = False, tweet_mode = 'extended',max_id=max_id))
+                tweets.extend(self.api.search(q=query,count = count, result_type=result,include_rts = False, tweet_mode = 'extended',max_id=max_id))
                 max_id = (int(tweets[-1].id_str[:4])) * (10**15) #day by day
                 iterr_num-=1
             except :
@@ -108,10 +108,11 @@ class Component:
 
         
         
-    def basicAnalysis(self,tweet):
+    def basicAnalysis(self,tweet,location=False):
         place={}
         retweet_count = tweet.retweet_count
         contentv,photo = self.content(tweet)
+        l = None
         try:
             text = tweet.full_text
         except:
@@ -132,9 +133,12 @@ class Component:
         user_mention = tweet.entities['user_mentions']
         user_mentions = [m['name'] for m in user_mention]
         
-        place,l = self.location_distribution(tweet = tweet)
-        
-        sentiment = model.predict(text=text,lang=lang)
+        if location:
+            place,l = self.location_distribution(tweet = tweet)
+
+
+
+        # sentiment = model.predict(text=text,lang=lang)
             
         tweetBanalysis = {"name":tweet.user.name
                     ,"user_url" : 'https://twitter.com/{}'.format(tweet.user.screen_name) 
@@ -155,7 +159,7 @@ class Component:
                     ,"location_without" : l
                     ,"hashtags" : hashtags
                     ,"user_mentions" : user_mentions
-                    ,"sentiment" : int(sentiment)
+                    # ,"sentiment" : int(sentiment)
                     }
         return tweetBanalysis
                 
@@ -183,7 +187,7 @@ class Component:
         
         for tweet in (tweets):
     
-            timelineBanalysis = self.basicAnalysis(tweet)
+            timelineBanalysis = self.basicAnalysis(tweet,location=True)
             timeline_analysis['timeline'].append(timelineBanalysis)
     
             if timelineBanalysis['location']:

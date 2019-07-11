@@ -46,10 +46,6 @@ def predict(*args, **kwargs):
     else:
         series_dtm = en_vect.transform([series])
         out = en_sv.predict(series_dtm)
-
+    
     return out[0]
 
-
-''' need to retrained '''
-# text = 'rest in peace to cameron boyce 😞 he was so young, incredibly talented, but also one of the kindest ppl I’ve ever met. sending love to his friends &amp; family 💔'
-# sent,text_ = predict(text=text, lang='en')

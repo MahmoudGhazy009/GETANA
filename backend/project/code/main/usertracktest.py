@@ -3,14 +3,15 @@
 Created on Thu Dec 13 14:42:03 2018
 @author: khalid
 """
+
 import warnings
 warnings.filterwarnings("ignore")
 from modules import *
 import tweepy
 from components import Component
 from auth import *
-from historical_user_data import get_user_timeline
-
+from historical_data import update_tweets
+import pre_processing2 as pre
 
 class Usertrack(Component):
     
@@ -57,7 +58,7 @@ class Usertrack(Component):
                  ,"likes": likes}
         return user_card
         
-    def user_timeline(self, num_tweets = 100,since_id=None):
+    def user_timeline(self, num_tweets = 100):
         """ 
         user_timeline: collect tweets for specific user
         Parameter: None
@@ -67,13 +68,14 @@ class Usertrack(Component):
         tweets=[]
         limit = False
         try:
-            tweets.extend(self.api.user_timeline(screen_name = self.user_id, count= 100, include_rts = True, exclude_replies=False, tweet_mode = 'extended', since_id= since_id))
+            tweets = (self.api.user_timeline(screen_name = self.user_id, count= 100, include_rts = True, exclude_replies=False, tweet_mode = 'extended'))
+            print(len(tweets))
             last_id=tweets[0].id
         except:
             limit=True
             last_id = since_id
 #            print(json.dumps({'error':'maximum num of requests'}))
-        return tweets,limit,last_id
+        return tweets,limit
     
 
     def fol_locate(self,users):
@@ -124,7 +126,7 @@ class Usertrack(Component):
         return likes_tweets 
 
 
-    def analysis(self,tweets,last_id):
+    def analysis(self,tweets):
         """
         analysis: gather all analysis timeline and likes analysis,
             follower and following location and user activites.
@@ -136,6 +138,7 @@ class Usertrack(Component):
         retweet = Counter()
         total_retweet_count=0
         
+        wordclouds = Counter()
         hash_num = Counter()
         apps = Counter()
         contents = Counter()
@@ -148,12 +151,15 @@ class Usertrack(Component):
         day_of_week = Counter()
         day_of_month = Counter()
         
-        last_id = last_id
         for tweet in (tweets):
-    
+        
             timelineBanalysis = self.basicAnalysis(tweet)
             timeline_analysis['timeline'].append(timelineBanalysis)
-        
+            
+            c = pre.wordcloud(timelineBanalysis['tweet'],timelineBanalysis['lang'])
+            wordclouds = c + wordclouds
+
+            # print(wordclouds)
             type_ = timelineBanalysis["type"]
             tweet_typ[type_] += 1
             app = timelineBanalysis["application"]
@@ -184,6 +190,7 @@ class Usertrack(Component):
         most_replied_user = dict(reply.most_common(20))
         most_quoted_user = dict(quote.most_common(20))
         most_retweeted_user = dict(retweet.most_common(20))
+        most_repeated_words = dict(wordclouds.most_common(100))
 
         hours = {'labels':list( hours.keys()),'values':list( hours.values())}
         day_of_week = {'labels':list( day_of_week.keys()),'values':list( day_of_week.values())}
@@ -191,7 +198,6 @@ class Usertrack(Component):
 
         
         timeline_analysis['analysis'] = {"freq_tweet_app" : dict(apps)#.most_common(5),
-                                ,"last_id" : last_id
                                 ,"freq_tweet_content" : dict(contents)
                                 ,"freq_tweet_type" : dict(tweet_typ)
                                 ,"freq_tweet_hashtag" : dict(hash_num)
@@ -201,6 +207,7 @@ class Usertrack(Component):
                                 ,"hours" : hours
                                 ,"day_of_week" : day_of_week
                                 ,"day_of_month" : day_of_month
+                                ,"wordcloud" : most_repeated_words
                                 }
         
         return timeline_analysis
@@ -209,11 +216,7 @@ class Usertrack(Component):
 
 if __name__ =='__main__':
     
-
-    #user_name =  sys.stdin.readlines()[0].replace('"',"").replace("\n","")
-    
     user_name =  sys.argv[1]
-    since_id = int(sys.argv[2])
     
     autho = tweepy.OAuthHandler(app[0], app[1])
     autho.set_access_token(app[2], app[3])
@@ -221,20 +224,28 @@ if __name__ =='__main__':
     
     user = Usertrack(api)
     user_card = user.profile_card(user_name)
+    user_analysis={}
     limit = False
     # {0:New,1:old}
     if user_card:
-        if since_id == 0:
-            tweets,last_id = get_user_timeline(user_name,user,since_id)
-        else:
-            tweets,limit,last_id = user.user_timeline(since_id=since_id)
-        if limit and last_id == since_id:
+
+        if len(sys.argv) == 2:
+            "guest"
+            tweets,limit = user.user_timeline()
+
+        elif len(sys.argv) == 3:
+            "client"
+            user_name = '@'+user_name
+            since_id = sys.argv[2]
+            tweets = update_tweets(user_name,user,since_id)
+                
+        if limit :
             print(json.dumps({'error':'No updated data'}))
-        elif limit and last_id != since_id:
-            print(json.dumps({'error':'Max Requests'}))
         else:
-            user_analysis = user.analysis(tweets,last_id)
-            
+            if len(tweets):
+                user_analysis = user.analysis(tweets)
+            else:
+                 user_analysis['analysis'] = {}       
             user_analysis['cards'] = user_card
             
             likes = user.user_likes()
@@ -243,18 +254,22 @@ if __name__ =='__main__':
             
             following = user.following()
             following_place = user.fol_locate(following)
-            follow_list=[]
+            following_list=[]
             for value in following_place.values():
                 value['type']='following'
-                follow_list.append(value)
+                following_list.append(value)
                     
             follower = user.follower()
             follower_place = user.fol_locate(follower)
+            follower_list=[]
             for value in follower_place.values():
                 value['type']='follower'
-                follow_list.append(value)
+                follower_list.append(value)
+    
+            user_analysis['map'] = {'follower':follower_list
+                                    ,'following':following_list }# list(following_place.values())}
 
-        user_analysis['map'] = follow_list# list(following_place.values())}
-        print(json.dumps(user_analysis))            # 
+            # print(json.dumps(user_analysis))
+            
     else:
         print(json.dumps({'error':'no user found'}))

@@ -20,6 +20,7 @@ if __name__ == '__main__':
     user_com = Component(api)
     
     num_tweets=1000
+
     search= sys.argv[1]
     if sys.argv[2] ==1:
         userName= 1
