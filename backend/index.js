@@ -13,6 +13,7 @@ const users = require("./users");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const dwp = require("./dwp")
 
 if (!config.get('jwtPrivateKey')) {
   console.error("fetal error: jwtPrivateKey not defined")
@@ -45,6 +46,39 @@ mongoose
   .then(() => console.log("Connected to Mongodb"))
   .catch(err => console.log("coulding connect", err));
 debug("connected to db");
+
+
+
+const {
+  Trend,
+  trendSchema
+} = require("./trends/trend.model");
+
+setInterval(async (req, res) => {
+  let data = await dwp("project\\code\\main\\trendstry.py", "0") //"test.py", "egypt") //
+  console.log("returnned from pyrhon", typeof data)
+  console.log("returnned from pyrhon", data.trends)
+  console.log("returnned from pyrhon", data.trends[0])
+  //let allTrends = ''
+
+  for (var trend in data.trends) {
+    console.log(data.trends[trend], `here is${trend} `);
+    /*const user = await Trend.findOneAndUpdate (
+      {Trend.name:}, {
+        $set: data
+      }, {
+        new: true,
+        useFindAndModify: false
+      }
+    );*/
+    //trnd = new Trend(data.trends[trend])
+    //trnd = await trnd.save()
+    //allTrends = await Trend.find();
+  }
+}, 60000);
+
+
+
 
 //my middlewares
 app.use(login);

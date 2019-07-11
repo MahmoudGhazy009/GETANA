@@ -1,5 +1,5 @@
 path = require('path')
-const chunks = [];
+let theStringyData = '';
 
 function dwp(pyfile, input) {
     const spawn = require("child_process").spawn;
@@ -8,13 +8,24 @@ function dwp(pyfile, input) {
     // this is a promise that gets the data returned from the python file
     return new Promise((resolve, error) => {
         console.log("in promise", path.join(__dirname, pyfile))
-        pythonProcess.stdout.on("data", chunk => chunks.push(chunk));
+        pythonProcess.stdout.on("data", data => {
+            theStringyData += data.toString()
+        });
         pythonProcess.stdout.on("end", () => {
-            //console.log(theStringyData)
+            console.log(theStringyData)
 
             try {
-
-                returnedData = JSON.parse(Buffer.concat(chunks).toString());
+                theStringyData = theStringyData.replace(/\\n/g, "\\n")
+                    .replace(/\\'/g, "\\'")
+                    .replace(/\\"/g, '\\"')
+                    .replace(/\\&/g, "\\&")
+                    .replace(/\\r/g, "\\r")
+                    .replace(/\\t/g, "\\t")
+                    .replace(/\\b/g, "\\b")
+                    .replace(/\\f/g, "\\f");
+                // remove non-printable and other non-valid JSON chars
+                theStringyData = theStringyData.replace(/[\u0000-\u0019]+/g, "");
+                returnedData = JSON.parse(theStringyData);
                 resolve(returnedData);
             } catch (e) {
                 console.log("error from dwp", e)

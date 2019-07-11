@@ -4,22 +4,10 @@ const express = require('express')
 const router = express.Router();
 const dwp = require("../dwp")
 
-//xxx: ask khaled to add only highest retweeted tweets
-// you need function to get updated data for each trend
-const trendSchema = new mongoose.Schema({
-    name: String,
-    // cords: [String],
-    trends: [{
-        name: String,
-        tweet_volume: Number,
-        //tweets: [Object]
-    }],
-    date: {
-        type: Date,
-        default: Date.now
-    }
-});
-const Trend = mongoose.model('Trend', trendSchema);
+const {
+    Trend,
+    trendSchema
+} = require("./trend.model");
 
 router.get('/', async (req, res) => {
     let allTrends = await Trend.find();
