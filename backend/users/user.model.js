@@ -42,7 +42,10 @@ userSchema =
             type: Date,
             default: Date.now
         },
-        role: String,
+        role: {
+            type: String,
+            default: "registed"
+        },
         password: {
             type: String,
             required: true,
@@ -51,25 +54,11 @@ userSchema =
         },
         tags: {
             type: [String],
-            /*validate: {
-                validator: function (v) {
-                    return v.length > 0;
-                },
-                message: 'A course should have at least one tag'
-            }*/
+            default: null
         },
         profiles: [{
             type: [String],
-            /*validate: {
-                isAsync: true,
-                validator: function (v, callback) {
-                    setTimeout(() => {
-                        const result = v && v.length > 0;
-                        callback(result);
-                    }, 4000);
-                },
-                message: "gggggggggg"
-            }*/
+            default: null
         }],
 
 
@@ -85,7 +74,7 @@ userSchema =
 
         sex: {
             type: String,
-            //required: true,
+            required: true,
             enum: ["Male", "Female"]
         }
     });
@@ -95,6 +84,7 @@ userSchema.methods.generateAuthToken = function () {
         _id: this._id,
         firstName: this.firstName,
         twitterUserName: this.twitterUserName,
+        email: this.email,
         role: this.role
     }, config.get('jwtPrivateKey'))
     //console.log("from user schema", token, "dddddd", config.get('jwtPrivateKey'), this._id)
@@ -130,6 +120,24 @@ function validateUser(user) {
     return Joi.validate(user, UserSchema);
 }
 
+function validateUpdateUser(user) {
+    const UpdateUserSchema = {
+
+        firstName: Joi.string()
+            .min(3)
+            .max(50),
+        lastName: Joi.string()
+            .min(3)
+            .max(50),
+        email: Joi.string().required().email(),
+        tags: Joi.array().items(Joi.string()),
+        profiles: Joi.array().items(Joi.string())
+    };
+    return Joi.validate(user, UpdateUserSchema);
+}
+
+validateUpdateUser
 exports.userSchema = userSchema;
 exports.User = User;
 exports.validateUser = validateUser;
+exports.validateUpdateUser = validateUpdateUser;

@@ -7,51 +7,48 @@ const express = require("express");
 const router = express.Router();
 const {
   User,
-  validateUser
+  validateUser,
+  validateUpdateUser
 } = require("./user.model");
 
-router.get("/", [auth, role], async (req, res) => {
+//list all users (only for admins)
+router.get("/", [auth, role("admin")], async (req, res) => {
   const allUsers = await User.find();
   res.send(allUsers);
   debug("get all user route", allUsers);
-  /*res.send({
-    "name": "hamada"
-  })*/
 });
 
+//Registeration add new user
 router.post("/", async (req, res) => {
-  console.log(req.body, "thi is the body")
+  debug(req.body, "thi is the body");
   const {
     error
   } = validateUser(req.body);
   if (error) {
-    console.log(error.details[0].message)
-    res.status(404).send(error.details[0].message);
-    return;
+    debug(error.details[0].message)
+    return res.status(404).send({
+      "msg": error.details[0].message
+    });
   }
 
   let user = await User.findOne({
     email: req.body.email
   });
+
   if (user) {
     console.log("error of already exist")
     return res.status(400).send({
-      "message": "User already registered."
+      "msg": "User already registered."
     });
   }
   user = new User(_.omit(req.body));
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
-  /* youn need to let it at another place not at registeration
 
-  
-  ,tags: req.body.tags,
-  profiles: req.body.profiles*/
-  // console.log(user, "eeeeeeeeeeeeeee")
   try {
     user = await user.save();
     const token = user.generateAuthToken();
-    console.log("aaaaaaaaaaaaaa", token);
+    debug("generated token", token);
 
     res
       .header("x-auth-token", token)
@@ -66,38 +63,55 @@ router.post("/", async (req, res) => {
       );
     debug("post a new user route", user);
   } catch (ex) {
-    //for (Field in ex.errors) console.log(ex.errors[Field].message);
-    console.log("moongoose validation error", ex);
+    debug("moongoose validation error", ex);
     res.send();
   }
 });
 
-router.put("/:id", async (req, res) => {
-  //you need to handle validation fn for update user data
-  /*const { error } = validateUser(req.body);
+//update user data
+router.put("/:id", [auth, role("registed")], async (req, res) => {
+  const {
+    error
+  } = validateUpdateUser(req.body);
   if (error) {
     return res.status(404).send(error.details[0].message);
-  }*/
+  }
+
   let data = req.body;
   const user = await User.findByIdAndUpdate(
-    req.params.id, {
+    req.user._id, {
       $set: data
     }, {
       new: true,
       useFindAndModify: false
     }
   );
-  if (!user) return res.status(404).send("not found user with this id");
+  if (!user) return res.status(404).send({
+    "msg": "not found user with this id"
+  });
   res.send(user);
   debug("update name of spesific user by id route", user);
 });
 
-router.get("/me", auth, async (req, res) => {
+router.get("/me", [auth, role("registed")], async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
 
-  if (!user) return res.status(404).send("not found user with this id");
+  if (!user) return res.status(404).send({
+    "msg": "not found user with this id"
+  });
   res.send(user);
   debug("get single user by id", user);
 });
 
 module.exports = router;
+
+/* youn need to let it at another place not at registeration
+
+
+,tags: req.body.tags,
+profiles: req.body.profiles*/
+// console.log(user, "eeeeeeeeeeeeeee")
+
+
+
+//for (Field in ex.errors) console.log(ex.errors[Field].message);

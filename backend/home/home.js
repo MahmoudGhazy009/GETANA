@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send("hello world");
+    setInterval(function () {
+        console.log('second passed');
+    }, 5000);
 });
 
 module.exports = router;

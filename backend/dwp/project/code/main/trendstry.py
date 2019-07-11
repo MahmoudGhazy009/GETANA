@@ -83,7 +83,7 @@ if __name__=='__main__':
 
     client = Explore(api)
         
-    cf = 0#int(sys.argv[1]) #{0 : update_all, 1 : get_trends, 2 : get_tweets}
+    cf = int(sys.argv[1]) #{0 : update_all, 1 : get_trends, 2 : get_tweets}
     
     country = client.available()
     
