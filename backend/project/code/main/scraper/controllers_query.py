@@ -8,13 +8,12 @@ import statuslookup as sl
 
 
     
-class Scraper(object):
+class Scraper():
 
     def __init__(self):
         pass
 
-    @staticmethod
-    def set_headers(data, language, refresh_cursor):
+    def set_headers(self,data, language, refresh_cursor):
         url = 'https://twitter.com/i/search/timeline?f=realtime&q=%s&src=typd'\
                 + '&%smax_position=%s'
         url = url % (urllib.parse.quote(data), language, refresh_cursor)
@@ -30,16 +29,21 @@ class Scraper(object):
 
         return url, headers
 
-    @staticmethod
-    def get_tweets(tweet_criteria,refresh_cursor = '',thread_length=100):
+
+    def get_tweets(self,*args):
+        """ tweet_criteria,refresh_cursor = '' """
         active = True
         results = []
         status = 200
-        last_id = 0
+        tweet_criteria = args[0]
+        refresh_cursor = args[1]
+        
+        if tweet_criteria.max_tweets <= 0:
+            return '',status,results
 
         lastflag = True
         while active:
-            json_,status = Scraper.get_json_response(tweet_criteria, refresh_cursor)
+            json_,status = self.get_json_response(tweet_criteria, refresh_cursor)
             print('status: {}'.format(status))
             try:
                 if not json_ or len(json_['items_html'].strip()) == 0:
@@ -63,16 +67,15 @@ class Scraper(object):
             for i,tweetHTML in enumerate(tweets):
                 _ = pq(tweetHTML)
                 tweet_id = _.attr('data-tweet-id')
-                if (i == 0) and (lastflag):
-                    last_id = tweet_id
-                    lastflag = False
-                    print(last_id)
                 results.append(tweet_id)
+            
+                if len(results) >= tweet_criteria.max_tweets:
+                        active = False
+                        break
+            
+        return refresh_cursor,status,results
 
-        return refresh_cursor,status,results,last_id
-
-    @staticmethod
-    def get_json_response(tweet_criteria, refresh_cursor):
+    def get_json_response(self,tweet_criteria, refresh_cursor):
         data = ''
 
         if hasattr(tweet_criteria, 'username'):
@@ -96,10 +99,9 @@ class Scraper(object):
         else:
             language = 'lang=en-US&'
 
-        url, headers = Scraper.set_headers(data, language, refresh_cursor)
+        url, headers = self.set_headers(data, language, refresh_cursor)
 
   
-
         try:
             r = req.get(url, headers=headers,timeout=20)
             #time.sleep(60)

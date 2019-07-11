@@ -26,13 +26,12 @@ def tweet_download(tweets_id, user_com):
             tweets = user_com.statuses_lookup(tweets_id[i*100:100*(i+1)])
         all_tweets.extend(tweets)    
         
-    print(' downloaded{}'.format(i))
     try:
         #call analysis analyze(all_tweets,user_com)
         pass
     except:
         print('error while analyze')
-    print('\n')
+    
     return all_tweets
 
 

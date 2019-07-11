@@ -19,11 +19,18 @@ if __name__ == '__main__':
     api = tweepy.API(autho)
     user_com = Component(api)
     
-    num_tweets=1000
-    search='love' # sys.argv[0]
-    userName= 0
-    query = 1
-    language= 'ar'
+    num_tweets=100
+    userName=0
+    query=0
+    search= sys.argv[1]
+    if sys.argv[2] ==1:
+        userName= 1
+    elif sys.argv[2] ==2:
+        query = 1
+    else:
+        print('error')
+
+    #language= 'ar'
     start= '2019-{}-{}'
     
     intervals = [(start.format(f'{i%12:02}','01'),start.format(f'{(i+1)%12:02}','01'))for i in range(1,8)]

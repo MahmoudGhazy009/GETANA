@@ -20,6 +20,7 @@ def read(path):
     country_map['code2'] = country_map['code2'].str.lower()
     return country_map
 
+
 country_map = read(path)
 
 def locate(location):

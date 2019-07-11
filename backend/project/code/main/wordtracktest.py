@@ -10,7 +10,7 @@ from modules import *
 import tweepy
 from components import Component
 from auth import *
-from historical_query_data import get_query_tweets
+from historical_data import update_tweets
 
 
 
@@ -38,7 +38,7 @@ if __name__=='__main__':
     elif len(sys.argv) ==3:
         "client"
         since_id = sys.argv[2]
-        tweets = get_query_tweets(query,co_api,since_id)
+        tweets = update_tweets(query,co_api,since_id)
 
     an= co_api.analysis(tweets) 
     

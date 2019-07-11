@@ -15,7 +15,6 @@ def main(*args,**kwargs):
 #    try:
     opts = kwargs
     r = args[0]
-    last_id = args[1]
     tweet_criteria = models.TweetCriteria()
     for opt, value in opts.items():
         if opt == 'username':
@@ -31,11 +30,10 @@ def main(*args,**kwargs):
         elif opt == 'language':
             tweet_criteria.language = value
     
-    miner = controllersu.Scraper()
-    r,status,result,last_id = miner.get_tweets(tweet_criteria,r,last_id)
-    print(last_id,'from scrap')
+    miner = controllers_q.Scraper()
+    r,status,result = miner.get_tweets(tweet_criteria,r)
     print('Finished scraping data')
-    return r,status,result,last_id
+    return r,status,result
 
 
 
