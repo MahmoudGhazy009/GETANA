@@ -6,8 +6,9 @@ const Footer = () => {
   return (
     <div
       style={{
-        position: "relative",
+        
         bottom: 0,
+        position: "relative",
         width: "100%"
       }}
     >

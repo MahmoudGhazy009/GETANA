@@ -8,11 +8,13 @@ class WordCloud extends Component {
     let { words } = this.props;
     wordss = [];
     Object.entries(words).map(([key, value]) => {
-      wordss.push({ text: key, value: value });
+      wordss.push({ text: key, value: value });    console.log(wordss.length,key,'momomo')
+
     });
+    console.log(wordss.length,'momomo')
 
     return (
-      <div>
+      <div  style={{marginLeft:"auto"}}>
         <ReactWordcloud words={wordss} />
       </div>
     );

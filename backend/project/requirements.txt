@@ -1,5 +1,0 @@
-pandas
-nltk
-pyquery
-emoji
-scikit-learn

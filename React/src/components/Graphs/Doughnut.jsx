@@ -27,8 +27,10 @@ class Doughnutt extends Component {
       chartData.datasets[0].data.push(value);
     });
     return (
-      <div className="chart">
-        <Doughnut data={chartData} />
+      <div className="chart" style={{width:"50%",marginLeft:"27%"}}>
+        <div style={{height:"30px"}}></div>
+        <Doughnut   data={chartData} />
+        <div style={{height:"30px"}}></div>
       </div>
     );
   }

@@ -1,7 +1,9 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
+import {
+  apiUrl
+} from "../config.json";
 
-const apiEndpoint = apiUrl + "/HashTag";
+const apiEndpoint = apiUrl + "/hashtags";
 
 function tweetUrl(id) {
   return `${apiEndpoint}/${id}`;
@@ -15,8 +17,8 @@ export function getTweet(tweetId) {
   return http.get(tweetUrl(tweetId));
 }
 
-export function sendTweet(url, word) {
-  return http.post(apiUrl + url, word);
+export function sendTweet(url) {
+  return http.get(apiUrl + url);
 }
 
 export function deleteTweet(tweetId) {
