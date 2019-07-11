@@ -16,7 +16,7 @@ from datetime import datetime,date,timedelta
 
 
 
-path = 'E:\\jan\\GETANA\\backend\\dwp'
+path = 'E:\\jan\\GETANA\\backend\\dwp'#
 
 #from auth import *
 

@@ -7,8 +7,9 @@ Created on Fri Dec 14 03:58:46 2018
 #from modules import *
 
 from collections import Counter
-# import sentimental_pickle as model
+import sentimental_pickle as model
 import localize as loc
+import pre_processing2 as pre
 
 class Component:
     
@@ -70,8 +71,7 @@ class Component:
         else:
             ty ='tweet'
         return ty
-    
-    
+        
     def location_distribution(self,tweet=None,user=None):
         place=None
         if tweet:
@@ -138,7 +138,7 @@ class Component:
 
 
 
-        # sentiment = model.predict(text=text,lang=lang)
+        sentiment = model.predict(text=text,lang=lang)
             
         tweetBanalysis = {"name":tweet.user.name
                     ,"user_url" : 'https://twitter.com/{}'.format(tweet.user.screen_name) 
@@ -159,7 +159,7 @@ class Component:
                     ,"location_without" : l
                     ,"hashtags" : hashtags
                     ,"user_mentions" : user_mentions
-                    # ,"sentiment" : int(sentiment)
+                    ,"sentiment" : int(sentiment)
                     }
         return tweetBanalysis
                 
@@ -172,6 +172,7 @@ class Component:
         Parameter: None
         Return: json object
         """
+        wordclouds = Counter()
         hash_num = Counter()
         apps = Counter()
         contents = Counter()
@@ -189,7 +190,11 @@ class Component:
     
             timelineBanalysis = self.basicAnalysis(tweet,location=True)
             timeline_analysis['timeline'].append(timelineBanalysis)
-    
+    		
+            c = pre.wordcloud(timelineBanalysis['tweet'],timelineBanalysis['lang'])
+            wordclouds = c + wordclouds
+
+
             if timelineBanalysis['location']:
                 country_name = timelineBanalysis['location']['name']
                 if country_name in place:    
@@ -221,6 +226,7 @@ class Component:
         hours = {'labels':list( hours.keys()),'values':list( hours.values())}
         day_of_week = {'labels':list( day_of_week.keys()),'values':list( day_of_week.values())}
         day_of_month = {'labels':list( day_of_month.keys()),'values':list( day_of_month.values())}
+        most_repeated_words = dict(wordclouds.most_common(100))
 
 
         timeline_analysis['analysis'] = {"freq_tweet_app" : dict(apps)#.most_common(5),
@@ -231,6 +237,7 @@ class Component:
                             ,"hours" : hours
                             ,"day_of_week" : day_of_week
                             ,"day_of_month" : day_of_month
+                            ,"wordcloud" : most_repeated_words
                             }
 #            self.track_df.loc[i,'gender'] = self.gender_predict(tweet.user.name.lower())
         

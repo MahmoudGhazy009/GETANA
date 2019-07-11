@@ -17,8 +17,8 @@ class Explore(Component):
     def available(self):
         trends_location = self.api.trends_available()
 #        country = [(d['country'], d['woeid']) for d in trends_location if d['parentid']==1]
-        country = {d['country']: d['woeid'] for d in trends_location if d['parentid']==1}
-        return country
+        self.country = {d['country']: d['woeid'] for d in trends_location if d['parentid']==1}
+        return self.country
     
     def woeid(self,location):
         """
@@ -28,7 +28,7 @@ class Explore(Component):
         if location =='world':
             place = 1
         else:
-            place= self.country_woid.get(location)
+            place= self.country.get(location)
         return place
         
     
@@ -91,7 +91,7 @@ if __name__=='__main__':
         result = client.update_all(country)
         
     elif(cf==1):
-        country = 'Egypt'#sys.argv[2] 
+        country = sys.argv[2] 
         result = client.get_trends(country)
     
     elif(cf==2):

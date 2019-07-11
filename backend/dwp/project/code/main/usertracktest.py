@@ -254,22 +254,21 @@ if __name__ =='__main__':
             
             following = user.following()
             following_place = user.fol_locate(following)
-            following_list=[]
+            follow_list=[]
             for value in following_place.values():
                 value['type']='following'
-                following_list.append(value)
+                follow_list.append(value)
                     
             follower = user.follower()
             follower_place = user.fol_locate(follower)
-            follower_list=[]
+
             for value in follower_place.values():
                 value['type']='follower'
-                follower_list.append(value)
+                follow_list.append(value)
     
-            user_analysis['map'] = {'follower':follower_list
-                                    ,'following':following_list }# list(following_place.values())}
+            user_analysis['map'] = follow_list# list(following_place.values())}
 
-            # print(json.dumps(user_analysis))
-            
+            print(json.dumps(user_analysis))
+
     else:
         print(json.dumps({'error':'no user found'}))

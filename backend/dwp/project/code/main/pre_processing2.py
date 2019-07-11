@@ -120,19 +120,15 @@ def wordcloud(data,lang='en'):
     # remove punc
     data = data.translate(table)    
 
-    if lang == 'en':
-        data = data.lower()
-        words = word_tokenize(data)
-        wordsFiltered = []
-        for w in words:
-            if w not in en_stopWords:
-                c[w]+=1
-    else:
-        words = word_tokenize(data)
-        wordsFiltered = []
-        for w in words:
+    
+    data = data.lower()
+    words = word_tokenize(data)
+    for w in words:
+        if lang == 'ar':    
             if w not in ar_stopWords:
                 c[w]+=1
-    
+        else:
+            if w not in en_stopWords:
+                c[w]+=1
     return c
 
