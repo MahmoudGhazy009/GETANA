@@ -20,7 +20,7 @@ router.get("/", [auth, role("admin")], async (req, res) => {
 
 //Registeration add new user
 router.post("/", async (req, res) => {
-  debug(req.body, "thi is the body");
+  console.log(req.body, "thi is the body");
   const {
     error
   } = validateUser(req.body);
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
   try {
     user = await user.save();
     const token = user.generateAuthToken();
-    debug("generated token", token);
+    console.log("generated token", token);
 
     res
       .header("x-auth-token", token)
@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
 });
 
 //update user data
-router.put("/:id", [auth, role("registed")], async (req, res) => {
+router.put("/", [auth, role("registed")], async (req, res) => {
   const {
     error
   } = validateUpdateUser(req.body);
@@ -94,12 +94,15 @@ router.put("/:id", [auth, role("registed")], async (req, res) => {
 });
 
 router.get("/me", [auth, role("registed")], async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
-
-  if (!user) return res.status(404).send({
+  //const user = await User.findById(req.user._id).select("-password");
+  console.log("here in get and id is", req.params.id)
+  let data = await dwp("project\\code\\main\\usertracktest.py", req.params.id);
+  data = JSON.parse(data)
+  console.log("returned data", data.analysis, data.cards)
+  /*if (!user) return res.status(404).send({
     "msg": "not found user with this id"
-  });
-  res.send(user);
+  });*/
+  res.send(data.analysis);
   debug("get single user by id", user);
 });
 

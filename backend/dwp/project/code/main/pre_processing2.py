@@ -15,6 +15,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.isri import ISRIStemmer
 from nltk.tokenize import  word_tokenize
 from nltk.corpus import stopwords
+#nltk.download('punkt')
 
 from collections import Counter
 #from nltk import pos_tag

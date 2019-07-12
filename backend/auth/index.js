@@ -33,7 +33,16 @@ router.post("/", async (req, res) => {
     }
     try {
         const token = user.generateAuthToken();
-        res.send(token)
+        res
+            .header("x-auth-token", token)
+            .send(
+                _.pick(user, [
+                    "_id",
+                    "firstName",
+                    "lastName",
+                    "twitterUserName",
+                    "email"
+                ]))
         console.log('tokrn', token)
     } catch (ex) {
         //for (Field in ex.errors) console.log(ex.errors[Field].message);

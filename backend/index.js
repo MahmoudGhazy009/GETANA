@@ -50,10 +50,11 @@ debug("connected to db");
 
 
 const {
-  Trend,
-  trendSchema
-} = require("./trends/trend.model");
 
+  trendSchema,
+  Trend
+} = require("./trends/trend.model");
+/*
 setInterval(async (req, res) => {
   let data = await dwp("project\\code\\main\\trendstry.py", "0") //"test.py", "egypt") //
   console.log("returnned from pyrhon", typeof data)
@@ -63,20 +64,19 @@ setInterval(async (req, res) => {
 
   for (var trend in data.trends) {
     console.log(data.trends[trend], `here is${trend} `);
-    /*const user = await Trend.findOneAndUpdate (
-      {Trend.name:}, {
-        $set: data
-      }, {
-        new: true,
-        useFindAndModify: false
-      }
-    );*/
+    const Trend = await Trend.findOneAndUpdate({
+      name: data.trends[trend].name
+    }, {
+      $set: data
+    }, {
+      new: true,
+      useFindAndModify: false
+    });
     //trnd = new Trend(data.trends[trend])
     //trnd = await trnd.save()
     //allTrends = await Trend.find();
   }
-}, 60000);
-
+}, 300000);*/
 
 
 

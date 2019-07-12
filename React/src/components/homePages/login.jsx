@@ -1,19 +1,24 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./form";
+import jwtDecode from "jwt-decode";
 import { getToken } from "../../servics/authService";
 
 class LoginForm extends Form {
   state = {
-    data: { username: "", password: "" },
+    data: { email: "", password: "" },
     errors: {}
   };
 
   schema = {
-    username: Joi.string()
+    email: Joi.string()
       .required()
-      .label("Username"),
+      .email()
+      .min(5)
+      .max(255)
+      .label("Email"),
     password: Joi.string()
+      .min(8)
       .required()
       .label("Password")
   };
@@ -23,37 +28,36 @@ class LoginForm extends Form {
     // const token = await getToken("users", data);
 
     try {
-      const { data: token } = await getToken("auth", data);
-      localStorage.setItem("tokenKey", token.token);
-      console.log(token, "token");
-      // if (token) window.location = "/";
+      const token = await getToken("/auth", data);
+      localStorage.setItem("tokenKey", token.headers["x-auth-token"]);
+      const decode = jwtDecode(token.headers["x-auth-token"]);
+      // console.log({ token, decode });
+      // console.log(data, "dataaaaa");
+
+      // const token = await getToken("/auth", data);
+      // console.log(token.headers["x-auth-token"], "token", token);
+      if (token) window.location = "/";
     } catch (ex) {
-      //   if (ex.response && ex.response.status === 400) {
-      //     const errors = { ...this.state.errors };
-      //     errors.username = ex.response.data;
-      //     this.setState({ errors });
-      //   }
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
     }
   };
 
   render() {
     return (
-      <div style={{ padding: "150px", background: "#212529" }}>
-        <h1
-          style={{
-            fontFamily: "Just Another Hand,cursive",
-            textAlign: "center",
-            padding: "30px",
-            color: "#FFF"
-          }}
-        >
-          Login
-        </h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("username", "Username", "text", "UserName")}
-          {this.renderInput("password", "Password", "password", "Password")}
-          {this.renderButton("Submit")}
-        </form>
+      <div className="row justify-content-md-center">
+        <div className="col-md-6 col-md-offset-3 m-3">
+          <h1>Login</h1>
+
+          <form onSubmit={this.handleSubmit} style={{ marginTop: 50 }}>
+            {this.renderInput("email", "Email", "mail", "E-mail")}
+            {this.renderInput("password", "Password", "password")}
+            {this.renderButton("Login")}
+          </form>
+        </div>
       </div>
     );
   }

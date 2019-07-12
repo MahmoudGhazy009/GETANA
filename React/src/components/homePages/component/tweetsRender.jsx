@@ -41,9 +41,9 @@ class TweetsRender extends Form {
     this.setState({ clicked });
     console.log(this.state.data, "gggg", this.state.data.search);
     const { data: tweets } = await sendTweet(
-      "/hashtags/" + `${this.state.data.search}`
+      `/hashtags/${this.state.data.search}`
     );
-    // const {data: tweets}=await getTweets();
+    //const {data: tweets}=await getTweets();
 
     this.setState({ tweets });
     console.log("here what back", tweets);

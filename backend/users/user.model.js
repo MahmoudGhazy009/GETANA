@@ -70,8 +70,13 @@ userSchema =
 
         profiles: [{
             type: hashtagSchema
+        }],
+        tags: [{
+            type: String
+        }],
+        profiles: [{
+            type: String
         }],*/
-
         sex: {
             type: String,
             required: true,
@@ -129,7 +134,7 @@ function validateUpdateUser(user) {
         lastName: Joi.string()
             .min(3)
             .max(50),
-        email: Joi.string().required().email(),
+        //email: Joi.string().required().email(),
         tags: Joi.array().items(Joi.string()),
         profiles: Joi.array().items(Joi.string())
     };

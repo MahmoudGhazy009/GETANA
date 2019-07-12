@@ -1,30 +1,70 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./component/form";
+import { getToken } from "../../servics/authService";
 
 class RegisterForm extends Form {
   state = {
-    data: { username: "", password: "", name: "" },
-    errors: {}
+    data: {
+      sex: "",
+      password: "",
+      twitterUserName: "",
+      firstName: "",
+      lastName: "",
+      email: ""
+    },
+    errors: {},
+    sex: [{ _id: "Male", name: "Male" }, { _id: "Female", name: "Female" }]
   };
 
   schema = {
-    username: Joi.string()
+    firstName: Joi.string()
       .required()
-      .email()
-      .label("Username"),
+      .min(3)
+      .max(20)
+      .label("FirstName"),
+    lastName: Joi.string()
+      .required()
+      .min(3)
+      .max(20)
+
+      .label("LastName"),
     password: Joi.string()
       .required()
-      .min(5)
+      .min(8)
+      .max(24)
       .label("Password"),
-    name: Joi.string()
+    twitterUserName: Joi.string()
       .required()
-      .label("Name")
-  };
+      .min(3)
+      .max(50)
 
-  doSubmit = () => {
+      .label("Name"),
+    email: Joi.string()
+      .required()
+      .email()
+      .max(255)
+      .label("Email"),
+    sex: Joi.string()
+      .required()
+      .label("Sex")
+  };
+  doSubmit = async () => {
     // Call the server
-    console.log("Submitted");
+    const { data } = this.state;
+    // const token = await getToken("users", data);
+
+    try {
+      const token = await getToken("/users", data);
+      if (token) window.location = "/login";
+      // console.log(data, token);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
@@ -33,9 +73,18 @@ class RegisterForm extends Form {
         <div className="col-md-6 col-md-offset-3 m-3">
           <h1>Register</h1>
           <form onSubmit={this.handleSubmit} style={{ marginTop: 50 }}>
-            {this.renderInput("username", "Username")}
-            {this.renderInput("password", "Password", "password")}
-            {this.renderInput("name", "Name")}
+            {this.renderInput("firstName", "FirstName", "", "FirstName")}
+            {this.renderInput("lastName", "LastName", "", "LastName")}
+            {this.renderInput(
+              "twitterUserName",
+              "twitterUserName",
+              "",
+              "Twiter User Name "
+            )}
+            {this.renderInput("email", "Email", "mail", "E-mail")}
+            {this.renderInput("password", "Password", "password", "password")}
+            {this.renderSelect("sex", "Sex", this.state.sex)}
+
             {this.renderButton("Register")}
           </form>
         </div>

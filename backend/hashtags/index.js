@@ -12,16 +12,20 @@ router.get('/:id', async (req, res) => {
     try {
         //talk to py and get new data
         console.log("here in get and id is", req.params.id)
-        const data = await dwp("project\\code\\main\\wordtracktest.py", req.params.id);
-        console.log("returned data", data)
+        let data = await dwp("project\\code\\main\\wordtracktest.py", req.params.id);
+        //console.log(JSON.stringify(data), "returned data", typeof data)
+        data = JSON.parse(data)
+        console.log(data)
+        //console.log("returned data", typeof data)
         if (!data) return res.status(404).send("not found user with this id");
         data.name = req.params.id;
-        let hashtag = new Hashtags(data)
+        /*let hashtag = new Hashtags(data)
         //xx check if not updated to db and update it    
         hashtag = await hashtag.save();
-        //send to front
-        res.send(hashtag);
-        debug("post a new user route", hashtag);
+        console.log(typeof hashtag)
+        //send to front*/
+        res.send(data);
+        //debug("post a new user route", hashtag);
     } catch (err) {
         console.log("error", err)
     }

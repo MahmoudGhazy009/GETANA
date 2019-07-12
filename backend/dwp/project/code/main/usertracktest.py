@@ -58,7 +58,7 @@ class Usertrack(Component):
                  ,"likes": likes}
         return user_card
         
-    def user_timeline(self, num_tweets = 100):
+    def user_timeline(self, num_tweets = 50):
         """ 
         user_timeline: collect tweets for specific user
         Parameter: None
@@ -69,7 +69,7 @@ class Usertrack(Component):
         limit = False
         try:
             tweets = (self.api.user_timeline(screen_name = self.user_id, count= 100, include_rts = True, exclude_replies=False, tweet_mode = 'extended'))
-            print(len(tweets))
+            #print(len(tweets))
             last_id=tweets[0].id
         except:
             limit=True

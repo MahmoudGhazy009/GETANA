@@ -105,7 +105,8 @@ class Home extends Component {
             </div>
             <div className="col-sm">
               <div className="feature text-center ">
-                <RegularIcon iconName={"fa fa-flask"} />
+              <Link className="navbar-brand scroll" to="/trends">
+  <RegularIcon iconName={"fa fa-flask"} /></Link>
                 <Rotate forever cascade><h3 className="margineText">Trends Map</h3></Rotate>
                 <div className="nn my-3" />
                 <p className="text-center">Display data-driven social media activity live on a custom multi-platform streaming wall at your event, venue, or office.</p>

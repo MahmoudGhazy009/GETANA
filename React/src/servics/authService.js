@@ -1,5 +1,7 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
+import {
+  apiUrl
+} from "../config.json";
 
 const apiEndpoint = apiUrl;
 
@@ -14,7 +16,7 @@ export function getCart(link) {
   return http.get(apiEndpoint + link);
 }
 export function getToken(url, body) {
-  return http.post(url, body);
+  return http.post(apiEndpoint + url, body);
 }
 export function addBook(url, body) {
   return http.post(apiEndpoint + url, body);
@@ -31,7 +33,9 @@ export function getMovie(movieId) {
 
 export function saveMovie(movie) {
   if (movie._id) {
-    const body = { ...movie };
+    const body = {
+      ...movie
+    };
     delete body._id;
     return http.put(movieUrl(movie._id), body);
   }

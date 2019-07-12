@@ -1,6 +1,8 @@
 const debug = require("debug")("app:startup");
 const dwp = require("../dwp")
+const dwpl = require('../dwp/project/code/main/dealWithPython')
 const express = require('express')
+const mongoose = require('mongoose')
 const router = express.Router();
 const {
     TwitterUser,
@@ -11,27 +13,55 @@ router.get('/:id', async (req, res) => {
     try {
         //talk to py and get new data
         console.log("here in get and id is", req.params.id)
-        const data = await dwp("project\\code\\main\\usertrack.py", req.params.id);
+        let data = await dwp("project\\code\\main\\usertracktest.py", req.params.id);
+        data = JSON.parse(data)
         console.log("returned data", data)
-        if (!data) return res.status(404).send("not found user with this id");
-        let twitterUser = new TwitterUser(data)
+
+        //var validator = require('is-my-json-valid')
+        //console.log('should be valid', validator(data))
+        //console.log("returned data", data, typeof data)
+        /*var Model = createModelForName(req.params.id); // Create the model.
+        var model = Model(data.items); // Create a model instance.
+        model.save(function (err) { // Save
+            if (err) {
+                console.log(err);
+            }
+        });*/
+        //if (!data) return res.status(404).send("not found user with this id");
+        //let twitterUser = new TwitterUser(data)
         //xx check if not updated to db and update it    
-        twitterUser = await twitterUser.save();
+        //twitterUser = await twitterUser.save();
         //send to front
-        res.send(twitterUser);
-        debug("post a new user route", twitterUser);
+        res.send(data);
+        //debug("post a new user route", twitterUser);
     } catch (err) {
         console.log("error", err)
     }
-
 });
+var establishedModels = []
 
-router.get('premium/:id', (req, res) => {
+function createModelForName(name) {
+    if (!(name in establishedModels)) {
+        var Any = new mongoose.Schema({
+            any: mongoose.Schema.Types.Mixed
+        });
+        establishedModels[name] = mongoose.model(name, Any);
+    }
+    return establishedModels[name];
+
+}
+router.get('/registed/:id', async (req, res) => {
     //check if it's his closed accounts
     //talk to db and check its updated
+    //console.log("in alright")
+
+    const twitterUser = await TwitterUser
+        .findOne({
+            name: req.params.id
+        })
     //else update from py 
     //send to front 
-    res.send(`Hello ${req.params.id}`);
+    res.send(twitterUser);
 });
 
 //function update premium closed accounts repeatly

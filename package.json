@@ -21,6 +21,7 @@
     "concurrently": "^4.1.0",
     "d3": "^5.9.2",
     "d3-cloud": "^1.2.5",
+    "is-my-json-valid": "^2.20.0",
     "nodemon": "^1.18.10",
     "python-shell": "^1.0.7",
     "randomcolor": "^0.5.4",

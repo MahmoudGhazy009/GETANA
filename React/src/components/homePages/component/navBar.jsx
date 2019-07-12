@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import logo2 from "../images/logo.png";
 //import logo2 from "../images/watchman.png";
 import { NavLink, Link } from "react-router-dom";
-import "./nav.css"
+import "./nav.css";
 class NavBar extends Component {
   render() {
     return (
@@ -10,7 +10,7 @@ class NavBar extends Component {
         <nav
           id="navbar"
           className="fixed-top navbar navbar-expand-lg "
-          style={{ height: 56,fontFamily:"Nanum Pen Script, cursive"}}
+          style={{ height: 56, fontFamily: "Nanum Pen Script, cursive" }}
         >
           <div className="container">
             <div className="navbar-header">
@@ -36,55 +36,72 @@ class NavBar extends Component {
             >
               <ul className="navbar-nav ml-auto text-center">
                 <li>
-                  <NavLink className="nav-item nav-link" style={{fontSize:14}} to="/home">
+                  <NavLink
+                    className="nav-item nav-link"
+                    style={{ fontSize: 14 }}
+                    to="/home"
+                  >
                     Home
                   </NavLink>
                 </li>
                 <li className="">
-                  <NavLink className="nav-item nav-link"  style={{fontSize:14,marginLeft:20}} to="/about">
+                  <NavLink
+                    className="nav-item nav-link"
+                    style={{ fontSize: 14, marginLeft: 20 }}
+                    to="/about"
+                  >
                     About
                   </NavLink>
                 </li>
                 <li className="">
-                  <NavLink className="nav-item nav-link"  style={{fontSize:14 ,marginLeft:20,paddingRight: 30}} to="/feature">
+                  <NavLink
+                    className="nav-item nav-link"
+                    style={{ fontSize: 14, marginLeft: 20, paddingRight: 30 }}
+                    to="/feature"
+                  >
                     Features
                   </NavLink>
                 </li>
 
                 <li>
-                <a
-            className="fb-ic"
-            href="https://www.facebook.com/Twitter-Olive-2604548039765013/?modal=admin_todo_tour"
-            target="_blank" style={{paddingLeft:30,borderLeft:"1px solid white"}}>
-            <i className="fa fa-facebook-f fa-sm white-text fa-2x"  style={{fontSize:22,color:"#17a2b8",paddingTop:13}} />
-             </a>
-                
+                  <a
+                    className="fb-ic"
+                    href="https://www.facebook.com/Twitter-Olive-2604548039765013/?modal=admin_todo_tour"
+                    target="_blank"
+                    style={{ paddingLeft: 30, borderLeft: "1px solid white" }}
+                  >
+                    <i
+                      className="fa fa-facebook-f fa-sm white-text fa-2x"
+                      style={{ fontSize: 22, color: "#17a2b8", paddingTop: 13 }}
+                    />
+                  </a>
                 </li>
 
                 <li>
-                
-                <a
-            className="tw-ic"
-            href="https://twitter.com/TweetOlive1"
-            target="_blank"
-          >
-            <i className="fa fa-twitter fa-sm white-text fa-2x"  style={{fontSize:22,color:"#38A1F3",paddingTop:13}}  />
-          </a>
-                
+                  <a
+                    className="tw-ic"
+                    href="https://twitter.com/TweetOlive1"
+                    target="_blank"
+                  >
+                    <i
+                      className="fa fa-twitter fa-sm white-text fa-2x"
+                      style={{ fontSize: 22, color: "#38A1F3", paddingTop: 13 }}
+                    />
+                  </a>
                 </li>
 
                 <li>
-                
-                <a
-            className="ins-ic"
-            href="https://www.instagram.com/twitterolive/"
-            target="_blank"
-          >
-            <i className="fa fa-instagram fa-sm white-text fa-2x" style={{fontSize:22,color:"#17a2b8",paddingTop:13}} />
-          </a>
-                
+                  <a
+                    className="ins-ic"
+                    href="https://www.instagram.com/twitterolive/"
+                    target="_blank"
+                  >
+                    <i
+                      className="fa fa-instagram fa-sm white-text fa-2x"
+                      style={{ fontSize: 22, color: "#17a2b8", paddingTop: 13 }}
+                    />
+                  </a>
                 </li>
-
               </ul>
             </div>
           </div>
